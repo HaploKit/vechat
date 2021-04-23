@@ -96,8 +96,8 @@ namespace racon
 
         std::sort(rank.begin() + 1, rank.end(), [&](uint32_t lhs, uint32_t rhs) { return positions_[lhs].first < positions_[rhs].first; });
 
-        std::cerr << "Nohap sequences_[0]:" << sequences_.front().first << std::endl;
-        std::cerr << "Nohap sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+        // std::cerr << "Nohap sequences_[0]:" << sequences_.front().first << std::endl;
+        // std::cerr << "Nohap sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
         uint32_t offset = 0.01 * sequences_.front().second;
         for (uint32_t j = 1; j < sequences_.size(); ++j) //j starts from 1, the 0th is the backbone
@@ -143,7 +143,7 @@ namespace racon
 
         std::vector<uint32_t> coverages;
         consensus_ = graph.GenerateConsensus(&coverages);
-        std::cerr << "consensus_ len:" << consensus_.length() << std::endl;
+        // std::cerr << "consensus_ len:" << consensus_.length() << std::endl;
 
         if (type_ == WindowType::kTGS && trim)
         {
@@ -265,10 +265,15 @@ namespace racon
 
         // start to prune the graph
 
-        int64_t min_weight = 15;
-        double min_confidence = 0.22;
+        int64_t min_weight = 5;
+        double min_confidence = 0.18;
         double min_support = 0.1;
         std::uint32_t num_prune = 2;
+
+        if (!qualities_[0].first)
+        {
+            min_weight *= 20; //Q20 as cutoff if providing base quality
+        }
 
         std::cerr << "Pruning graph " << 1 << "th...\n";
         graph.PruneGraph(min_weight, min_confidence, min_support);
@@ -284,50 +289,76 @@ namespace racon
 
         // for (std::uint32_t k = 0; k < num_prune - 1; ++k)
         // {
-            // std::cerr << "Pruning graph " << k + 2 << "th...\n";
+        // std::cerr << "Pruning graph " << k + 2 << "th...\n";
 
-            for (uint32_t j = 1; j < sequences_.size(); ++j)
+        for (uint32_t j = 1; j < sequences_.size(); ++j)
+        {
+            uint32_t i = rank[j];
+
+            spoa::Alignment alignment;
+            if (positions_[i].first < offset && positions_[i].second >
+                                                    sequences_.front().second - offset)
             {
-                uint32_t i = rank[j];
-
-                spoa::Alignment alignment;
                 alignment = alignment_engine->Align(sequences_[i].first, sequences_[i].second, *p);
                 // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
-
-                std::vector<std::uint32_t> weights;
-                for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
-                {
-                    weights.emplace_back(1); // TODO, consider quality socre
-                }
-                (*p).AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
+            }
+            else
+            {
+                std::vector<const spoa::Graph::Node *> mapping;
+                auto subgraph = (*p).Subgraph(
+                    positions_[i].first,
+                    positions_[i].second,
+                    &mapping);
+                alignment = alignment_engine->Align(
+                    sequences_[i].first, sequences_[i].second, subgraph);
+                subgraph.UpdateAlignment(mapping, &alignment);
             }
 
-            (*p).PruneGraph(min_weight, min_confidence, min_support);
+            std::vector<std::uint32_t> weights;
+            if (qualities_[i].first == nullptr)
+            {
+                for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
+                {
+                    weights.emplace_back(1);
+                }
+            }
+            else
+            { // consider quality socre
+                for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
+                {
+                    std::uint32_t weight = static_cast<std::uint32_t>(qualities_[i].first[n]) - 33; //phred score
+                    weights.emplace_back(weight);
+                }
+            }
+            (*p).AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
+        }
 
-            spoa::Graph lagestsubgraph2{};
-            lagestsubgraph2 = (*p).LargestSubgraph();
-            // lagestsubgraph.Clear();
-            p = &lagestsubgraph2;
-            std::cerr << "lagestsubgraph2 node size:" << (*p).nodes().size() << std::endl;
+        (*p).PruneGraph(min_weight, min_confidence, min_support);
+
+        spoa::Graph lagestsubgraph2{};
+        lagestsubgraph2 = (*p).LargestSubgraph();
+        // lagestsubgraph.Clear();
+        p = &lagestsubgraph2;
+        std::cerr << "lagestsubgraph2 node size:" << (*p).nodes().size() << std::endl;
         // }
 
-        std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
-        std::cerr << "lagestsubgraph edge size:" << (*p).edges().size() << std::endl;
+        // std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
+        // std::cerr << "lagestsubgraph edge size:" << (*p).edges().size() << std::endl;
 
-        //only need to correct the target read (the first one, I guess)
-        std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
-        std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+        // //only need to correct the target read (the first one, I guess)
+        // std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
+        // std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
         auto alignment = alignment_engine->Align(sequences_.front().first, sequences_.front().second, *p);
         // auto alignment = alignment_engine->Align(sequences_[rank[0]].first, sequences_[rank[0]].second, *p);
 
         consensus_ = (*p).GenerateCorrectedSequence(alignment);
-        std::cerr << "alignment size2: " << alignment.size() << std::endl;
+        // std::cerr << "alignment size2: " << alignment.size() << std::endl;
         // for (const auto &it_align : alignment)
         // {
         //     std::cerr << "alignment: " << it_align.first << "\t" << it_align.second << std::endl;
         // }
-        std::cerr << ">Window consensus: " << consensus_ << std::endl;
+        // std::cerr << ">Window consensus: " << consensus_ << std::endl;
 
         /*  TODO: trim consensus based on base coverages to avoid chimeric sequences    
 
