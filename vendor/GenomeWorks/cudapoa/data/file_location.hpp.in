@@ -1,0 +1,4 @@
+
+#pragma once
+
+#cmakedefine CUDAPOA_BENCHMARK_DATA_DIR "@CUDAPOA_BENCHMARK_DATA_DIR@"
