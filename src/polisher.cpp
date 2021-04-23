@@ -500,6 +500,7 @@ void Polisher::polish(std::vector<std::unique_ptr<Sequence>>& dst,
         }
     }
     else{
+        std::cerr<<"window length:"<<window_length_<<std::endl;
         for (uint64_t i = 0; i < windows_.size(); ++i) {
         thread_futures.emplace_back(thread_pool_->Submit(
             [&](uint64_t j) -> bool {

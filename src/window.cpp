@@ -96,8 +96,11 @@ namespace racon
 
         std::sort(rank.begin() + 1, rank.end(), [&](uint32_t lhs, uint32_t rhs) { return positions_[lhs].first < positions_[rhs].first; });
 
+        std::cerr << "Nohap sequences_[0]:" << sequences_.front().first << std::endl;
+        std::cerr << "Nohap sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+
         uint32_t offset = 0.01 * sequences_.front().second;
-        for (uint32_t j = 1; j < sequences_.size(); ++j)
+        for (uint32_t j = 1; j < sequences_.size(); ++j) //j starts from 1, the 0th is the backbone
         {
             uint32_t i = rank[j];
 
@@ -106,8 +109,7 @@ namespace racon
                                                     sequences_.front().second - offset)
             {
                 alignment = alignment_engine->Align(
-                    sequences_[i].first, sequences_[i].second,
-                    graph);
+                    sequences_[i].first, sequences_[i].second, graph);
             }
             else
             {
@@ -120,8 +122,7 @@ namespace racon
                     positions_[i].second,
                     &mapping);
                 alignment = alignment_engine->Align(
-                    sequences_[i].first, sequences_[i].second,
-                    subgraph);
+                    sequences_[i].first, sequences_[i].second, subgraph);
                 subgraph.UpdateAlignment(mapping, &alignment);
             }
 
@@ -142,6 +143,7 @@ namespace racon
 
         std::vector<uint32_t> coverages;
         consensus_ = graph.GenerateConsensus(&coverages);
+        std::cerr << "consensus_ len:" << consensus_.length() << std::endl;
 
         if (type_ == WindowType::kTGS && trim)
         {
@@ -181,7 +183,7 @@ namespace racon
     bool Window::generate_consensus(std::shared_ptr<spoa::AlignmentEngine> alignment_engine,
                                     bool trim, bool haplotype)
     {
-        std::cerr<<"Using --haplotype for error correction !!! "<<std::endl;
+        std::cerr << "Using --haplotype for error correction !!! " << std::endl;
         //function overloading
         if (!haplotype)
         {
@@ -195,6 +197,7 @@ namespace racon
             return false;
         }
 
+        // it seems that sequences_ stores the whole sequence of read, not window sequence
         spoa::Graph graph{};
         graph.AddAlignment(
             spoa::Alignment(),
@@ -256,6 +259,10 @@ namespace racon
                     qualities_[i].first, qualities_[i].second);
             }
         }
+
+        std::cerr << "old sequences_[0]:" << sequences_[0].first << std::endl;
+        std::cerr << "old sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+
         // start to prune the graph
 
         int64_t min_weight = 3;
@@ -275,9 +282,9 @@ namespace racon
 
         //TODO, try to consider SubGraph align !!
 
-        for (std::uint32_t k=0; k < num_prune - 1; ++k) 
-        {
-            std::cerr << "Pruning graph " << k + 2 << "th...\n";
+        // for (std::uint32_t k = 0; k < num_prune - 1; ++k)
+        // {
+            // std::cerr << "Pruning graph " << k + 2 << "th...\n";
 
             for (uint32_t j = 1; j < sequences_.size(); ++j)
             {
@@ -285,6 +292,7 @@ namespace racon
 
                 spoa::Alignment alignment;
                 alignment = alignment_engine->Align(sequences_[i].first, sequences_[i].second, *p);
+                // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
 
                 std::vector<std::uint32_t> weights;
                 for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
@@ -300,11 +308,25 @@ namespace racon
             lagestsubgraph2 = (*p).LargestSubgraph();
             // lagestsubgraph.Clear();
             p = &lagestsubgraph2;
-        }
+            std::cerr << "lagestsubgraph2 node size:" << (*p).nodes().size() << std::endl;
+        // }
+
+        std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
+        std::cerr << "lagestsubgraph edge size:" << (*p).edges().size() << std::endl;
 
         //only need to correct the target read (the first one, I guess)
-        auto alignment = alignment_engine->Align(sequences_[0].first,sequences_[0].second, *p);
+        std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
+        std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+
+        auto alignment = alignment_engine->Align(sequences_.front().first, sequences_.front().second, *p);
+        // auto alignment = alignment_engine->Align(sequences_[rank[0]].first, sequences_[rank[0]].second, *p);
+
         consensus_ = (*p).GenerateCorrectedSequence(alignment);
+        std::cerr << "alignment size2: " << alignment.size() << std::endl;
+        // for (const auto &it_align : alignment)
+        // {
+        //     std::cerr << "alignment: " << it_align.first << "\t" << it_align.second << std::endl;
+        // }
         std::cerr << ">Window consensus: " << consensus_ << std::endl;
 
         /*  TODO: trim consensus based on base coverages to avoid chimeric sequences    
