@@ -277,15 +277,18 @@ namespace racon
 
         std::cerr << "min weight " << min_weight << "\n";
         std::cerr << "Pruning graph " << 1 << "th...\n";
-        std::cerr << "raw graph size:" << graph.nodes().size()<< "\n";
+        std::cerr << "raw graph size:" << graph.nodes().size() << "\n";
         graph.PruneGraph(min_weight, min_confidence, min_support);
 
         spoa::Graph largestsubgraph{};
         largestsubgraph = graph.LargestSubgraph();
 
         //cause bug if largestsubgraph is too smaller than the original one
-        if(largestsubgraph.nodes().size()/graph.nodes().size() < 0.5){
-            consensus_="";
+        if (largestsubgraph.nodes().size() / graph.nodes().size() < 0.5)
+        {
+            std::cerr << "This is very bad:" << largestsubgraph.nodes().size()<<"\t"<<
+            graph.nodes().size() << "\n";
+            consensus_ = "";
             return false;
         }
 
@@ -293,9 +296,9 @@ namespace racon
 
         spoa::Graph *p;
         p = &largestsubgraph;
-        for(auto &it:largestsubgraph.nodes()){
-        std::cerr << "largest subgraph node id:" << it->id<< "\n";
-
+        for (auto &it : largestsubgraph.nodes())
+        {
+            std::cerr << "largest subgraph node id:" << it->id << "\n";
         }
         std::cerr << "largest graph size:" << largestsubgraph.nodes().size() << "\n";
 
@@ -364,7 +367,7 @@ namespace racon
         largestsubgraph2 = largestsubgraph.LargestSubgraph();
         // lagestsubgraph.Clear();
         // p = &lagestsubgraph2;
-        std::cerr << "lagestsubgraph2 node size:" <<largestsubgraph2.nodes().size() << std::endl;
+        std::cerr << "lagestsubgraph2 node size:" << largestsubgraph2.nodes().size() << std::endl;
         // }
 
         // std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
