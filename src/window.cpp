@@ -265,8 +265,8 @@ namespace racon
 
         // start to prune the graph
 
-        int64_t min_weight = 3;
-        double min_confidence = 0.05;
+        int64_t min_weight = 5;
+        double min_confidence = 0.08;
         double min_support = 0.1;
         std::uint32_t num_prune = 2;
 
