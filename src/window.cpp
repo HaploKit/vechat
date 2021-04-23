@@ -291,6 +291,11 @@ namespace racon
             consensus_ = "";
             return false;
         }
+        else{
+            std::cerr << "This is very good:" << largestsubgraph.nodes().size()<<"\t"<<
+            graph.nodes().size() << "\n";
+
+        }
 
         graph.Clear();
 
