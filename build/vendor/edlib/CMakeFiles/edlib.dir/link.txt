@@ -1,0 +1,1 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -Wall -Wextra -pedantic -Wall -Wextra -pedantic -O3 -DNDEBUG -dynamiclib -Wl,-headerpad_max_install_names  -o ../../lib/libedlib.dylib -install_name @rpath/libedlib.dylib CMakeFiles/edlib.dir/edlib/src/edlib.cpp.o 

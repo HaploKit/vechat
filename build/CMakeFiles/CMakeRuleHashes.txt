@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+82ab8a966f10aeab333d78baeec0e9d1 vendor/spoa/vendor/cereal/unittests/CMakeFiles/valgrind
