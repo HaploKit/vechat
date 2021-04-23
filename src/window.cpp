@@ -275,6 +275,7 @@ namespace racon
             min_weight *= 20; //Q20 as cutoff if providing base quality
         }
 
+        std::cerr << "min weight " << min_weight << "\n";
         std::cerr << "Pruning graph " << 1 << "th...\n";
         graph.PruneGraph(min_weight, min_confidence, min_support);
 
