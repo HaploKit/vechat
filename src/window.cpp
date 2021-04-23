@@ -284,7 +284,7 @@ namespace racon
         largestsubgraph = graph.LargestSubgraph();
 
         //cause bug if largestsubgraph is too smaller than the original one
-        if (largestsubgraph.nodes().size() <200)
+        if (largestsubgraph.nodes().size() <400)
         // if (largestsubgraph.nodes().size() / graph.nodes().size() < 0.5)
         {
             std::cerr << "This is very bad:" << largestsubgraph.nodes().size()<<"\t"<<
