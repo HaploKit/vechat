@@ -277,14 +277,27 @@ namespace racon
 
         std::cerr << "min weight " << min_weight << "\n";
         std::cerr << "Pruning graph " << 1 << "th...\n";
+        std::cerr << "raw graph size:" << graph.nodes().size()<< "\n";
         graph.PruneGraph(min_weight, min_confidence, min_support);
 
-        spoa::Graph lagestsubgraph{};
-        lagestsubgraph = graph.LargestSubgraph();
+        spoa::Graph largestsubgraph{};
+        largestsubgraph = graph.LargestSubgraph();
+
+        //cause bug if largestsubgraph is too smaller than the original one
+        if(largestsubgraph.nodes().size()/graph.nodes().size() < 0.5){
+            consensus_="";
+            return false;
+        }
+
         graph.Clear();
 
         spoa::Graph *p;
-        p = &lagestsubgraph;
+        p = &largestsubgraph;
+        for(auto &it:largestsubgraph.nodes()){
+        std::cerr << "largest subgraph node id:" << it->id<< "\n";
+
+        }
+        std::cerr << "largest graph size:" << largestsubgraph.nodes().size() << "\n";
 
         //TODO, try to consider SubGraph align !!
 
@@ -294,26 +307,36 @@ namespace racon
 
         for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
+            std::cerr << "\ntesting breakpoint:" << j << "\t" << sequences_.size() << std::endl;
+
             uint32_t i = rank[j];
 
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
                                                     sequences_.front().second - offset)
             {
-                alignment = alignment_engine->Align(sequences_[i].first, sequences_[i].second, *p);
+                std::cerr << "whole graph mode\n";
+                alignment = alignment_engine->Align(sequences_[i].first, sequences_[i].second, largestsubgraph);
                 // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
             }
             else
             {
+                std::cerr << "subgraph mode\n";
                 std::vector<const spoa::Graph::Node *> mapping;
-                auto subgraph = (*p).Subgraph(
+                std::cerr << "posi:" << positions_[i].first << " " << positions_[i].second << std::endl;
+                auto subgraph = largestsubgraph.Subgraph(
                     positions_[i].first,
                     positions_[i].second,
                     &mapping);
+
+                std::cerr << "error  point1" << std::endl;
                 alignment = alignment_engine->Align(
                     sequences_[i].first, sequences_[i].second, subgraph);
+
+                std::cerr << "error  point2" << std::endl;
                 subgraph.UpdateAlignment(mapping, &alignment);
             }
+            std::cerr << "alignment finish" << std::endl;
 
             std::vector<std::uint32_t> weights;
             if (qualities_[i].first == nullptr)
@@ -324,42 +347,42 @@ namespace racon
                 }
             }
             else
-            { // consider quality socre
+            { // consider quality score
                 for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
                 {
                     std::uint32_t weight = static_cast<std::uint32_t>(qualities_[i].first[n]) - 33; //phred score
                     weights.emplace_back(weight);
                 }
             }
-            (*p).AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
+            largestsubgraph.AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
         }
 
-        (*p).PruneGraph(min_weight, min_confidence, min_support);
+        std::cerr << "testing breakpoint:" << largestsubgraph.edges().size() << std::endl;
+        largestsubgraph.PruneGraph(min_weight, min_confidence, min_support);
 
-        spoa::Graph lagestsubgraph2{};
-        lagestsubgraph2 = (*p).LargestSubgraph();
+        spoa::Graph largestsubgraph2{};
+        largestsubgraph2 = largestsubgraph.LargestSubgraph();
         // lagestsubgraph.Clear();
-        p = &lagestsubgraph2;
-        std::cerr << "lagestsubgraph2 node size:" << (*p).nodes().size() << std::endl;
+        // p = &lagestsubgraph2;
+        std::cerr << "lagestsubgraph2 node size:" <<largestsubgraph2.nodes().size() << std::endl;
         // }
 
         // std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
-        // std::cerr << "lagestsubgraph edge size:" << (*p).edges().size() << std::endl;
 
         // //only need to correct the target read (the first one, I guess)
         // std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
         // std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
-        auto alignment = alignment_engine->Align(sequences_.front().first, sequences_.front().second, *p);
+        auto alignment = alignment_engine->Align(sequences_.front().first, sequences_.front().second, largestsubgraph2);
         // auto alignment = alignment_engine->Align(sequences_[rank[0]].first, sequences_[rank[0]].second, *p);
 
-        consensus_ = (*p).GenerateCorrectedSequence(alignment);
+        consensus_ = largestsubgraph2.GenerateCorrectedSequence(alignment);
         // std::cerr << "alignment size2: " << alignment.size() << std::endl;
         // for (const auto &it_align : alignment)
         // {
         //     std::cerr << "alignment: " << it_align.first << "\t" << it_align.second << std::endl;
         // }
-        // std::cerr << ">Window consensus: " << consensus_ << std::endl;
+        std::cerr << ">Window consensus: " << consensus_ << std::endl;
 
         /*  TODO: trim consensus based on base coverages to avoid chimeric sequences    
 
