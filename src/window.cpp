@@ -219,6 +219,7 @@ namespace racon
         {
             uint32_t i = rank[j];
 
+
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
                                                     sequences_.front().second - offset)
@@ -284,7 +285,8 @@ namespace racon
         largestsubgraph = graph.LargestSubgraph();
 
         //cause bug if largestsubgraph is too smaller than the original one
-        if (largestsubgraph.nodes().size() <500)
+        
+        /* if (largestsubgraph.nodes().size() <500)
         // if (largestsubgraph.nodes().size() / graph.nodes().size() < 0.5)
         {
             std::cerr << "This is very bad:" << largestsubgraph.nodes().size()<<"\t"<<
@@ -296,7 +298,7 @@ namespace racon
             std::cerr << "This is very good:" << largestsubgraph.nodes().size()<<"\t"<<
             graph.nodes().size() << "\n";
 
-        }
+        } */
 
         graph.Clear();
 
@@ -313,6 +315,7 @@ namespace racon
         // for (std::uint32_t k = 0; k < num_prune - 1; ++k)
         // {
         // std::cerr << "Pruning graph " << k + 2 << "th...\n";
+        auto local_alignment_engine=spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
 
         for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
@@ -325,25 +328,27 @@ namespace racon
                                                     sequences_.front().second - offset)
             {
                 std::cerr << "whole graph mode\n";
-                alignment = alignment_engine->Align(sequences_[i].first, sequences_[i].second, largestsubgraph);
+                alignment = alignment_engine->Align(
+                    sequences_[i].first, sequences_[i].second, largestsubgraph);
                 // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
             }
             else
-            {
+            { 
+                //local alignment since raw sequences may be partially aligned to pruned subgraph 
                 std::cerr << "subgraph mode\n";
-                std::vector<const spoa::Graph::Node *> mapping;
-                std::cerr << "posi:" << positions_[i].first << " " << positions_[i].second << std::endl;
-                auto subgraph = largestsubgraph.Subgraph(
-                    positions_[i].first,
-                    positions_[i].second,
-                    &mapping);
+                // std::vector<const spoa::Graph::Node *> mapping;
+                // std::cerr << "posi:" << positions_[i].first << " " << positions_[i].second << std::endl;
+                // auto subgraph = largestsubgraph.Subgraph(
+                //     positions_[i].first,
+                //     positions_[i].second,
+                //     &mapping);
 
-                std::cerr << "error  point1" << std::endl;
-                alignment = alignment_engine->Align(
-                    sequences_[i].first, sequences_[i].second, subgraph);
+                // std::cerr << "error  point1" << std::endl;
+                alignment = local_alignment_engine->Align(
+                    sequences_[i].first, sequences_[i].second, largestsubgraph);
 
-                std::cerr << "error  point2" << std::endl;
-                subgraph.UpdateAlignment(mapping, &alignment);
+                // std::cerr << "error  point2" << std::endl;
+                // subgraph.UpdateAlignment(mapping, &alignment);
             }
             std::cerr << "alignment finish" << std::endl;
 
