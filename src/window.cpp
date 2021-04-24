@@ -219,7 +219,6 @@ namespace racon
         {
             uint32_t i = rank[j];
 
-
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
                                                     sequences_.front().second - offset)
@@ -266,8 +265,8 @@ namespace racon
 
         // start to prune the graph
 
-        int64_t min_weight = 3;
-        double min_confidence = 0.1;
+        int64_t min_weight = 5;
+        double min_confidence = 0.18;
         double min_support = 0.1;
         std::uint32_t num_prune = 2;
 
@@ -285,7 +284,7 @@ namespace racon
         largestsubgraph = graph.LargestSubgraph();
 
         //cause bug if largestsubgraph is too smaller than the original one
-        
+
         /* if (largestsubgraph.nodes().size() <500)
         // if (largestsubgraph.nodes().size() / graph.nodes().size() < 0.5)
         {
@@ -315,11 +314,11 @@ namespace racon
         // for (std::uint32_t k = 0; k < num_prune - 1; ++k)
         // {
         // std::cerr << "Pruning graph " << k + 2 << "th...\n";
-        auto local_alignment_engine=spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
+        auto local_alignment_engine = spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
 
-        for (uint32_t j = 1; j < sequences_.size(); ++j)
+        for (uint32_t j = 1; j < sequences_.size(); ++j) //TODO if j=0 ?
         {
-            std::cerr << "\ntesting breakpoint:" << j << "\t" << sequences_.size() << std::endl;
+            // std::cerr << "\ntesting breakpoint:" << j << "\t" << sequences_.size() << std::endl;
 
             uint32_t i = rank[j];
 
@@ -327,15 +326,15 @@ namespace racon
             if (positions_[i].first < offset && positions_[i].second >
                                                     sequences_.front().second - offset)
             {
-                std::cerr << "whole graph mode\n";
+                // std::cerr << "whole graph mode\n";
                 alignment = alignment_engine->Align(
                     sequences_[i].first, sequences_[i].second, largestsubgraph);
                 // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
             }
             else
-            { 
-                //local alignment since raw sequences may be partially aligned to pruned subgraph 
-                std::cerr << "subgraph mode\n";
+            {
+                //local alignment since raw sequences may be partially aligned to pruned subgraph
+                // std::cerr << "subgraph mode\n";
                 // std::vector<const spoa::Graph::Node *> mapping;
                 // std::cerr << "posi:" << positions_[i].first << " " << positions_[i].second << std::endl;
                 // auto subgraph = largestsubgraph.Subgraph(
@@ -350,7 +349,7 @@ namespace racon
                 // std::cerr << "error  point2" << std::endl;
                 // subgraph.UpdateAlignment(mapping, &alignment);
             }
-            std::cerr << "alignment finish" << std::endl;
+            // std::cerr << "alignment finish" << std::endl;
 
             std::vector<std::uint32_t> weights;
             if (qualities_[i].first == nullptr)
@@ -371,7 +370,7 @@ namespace racon
             largestsubgraph.AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
         }
 
-        std::cerr << "testing breakpoint:" << largestsubgraph.edges().size() << std::endl;
+        // std::cerr << "testing breakpoint:" << largestsubgraph.edges().size() << std::endl;
         largestsubgraph.PruneGraph(min_weight, min_confidence, min_support);
 
         spoa::Graph largestsubgraph2{};
@@ -387,8 +386,21 @@ namespace racon
         // std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
         // std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
-        auto alignment = alignment_engine->Align(sequences_.front().first, sequences_.front().second, largestsubgraph2);
-        // auto alignment = alignment_engine->Align(sequences_[rank[0]].first, sequences_[rank[0]].second, *p);
+        // generate the haplotype aware corrected sequence
+        // spoa::Alignment alignment;
+        // if (positions_[i].first < offset && //TODO 
+        //     positions_[i].second > sequences_.front().second - offset)
+        // {
+        //     alignment = alignment_engine->Align(
+        //         sequences_.front().first, sequences_.front().second, largestsubgraph2);
+        // }
+        // else
+        // {
+            //the length of the target sequence would not be shorter than the length of subgraph
+            //thus local alignment is more suitable
+            auto alignment = local_alignment_engine->Align(
+                sequences_.front().first, sequences_.front().second, largestsubgraph2);
+        // }
 
         consensus_ = largestsubgraph2.GenerateCorrectedSequence(alignment);
         // std::cerr << "alignment size2: " << alignment.size() << std::endl;
@@ -396,7 +408,7 @@ namespace racon
         // {
         //     std::cerr << "alignment: " << it_align.first << "\t" << it_align.second << std::endl;
         // }
-        std::cerr << ">Window consensus: " << consensus_ << std::endl;
+        // std::cerr << ">Window consensus: " << consensus_ << std::endl;
 
         /*  TODO: trim consensus based on base coverages to avoid chimeric sequences    
 

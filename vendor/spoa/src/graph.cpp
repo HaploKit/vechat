@@ -645,20 +645,20 @@ namespace spoa
     while (!stack.empty())
     {
       auto curr = stack.top();
-      
+
       stack.pop();
-      std::cerr << "x=" << x++ << std::endl;
+/*       std::cerr << "x=" << x++ << std::endl;
       std::cerr << "curr->inedges.size " << curr->inedges.size() << std::endl; 
       std::cerr << "curr->code " << curr->code << std::endl; 
       std::cerr << "curr->id " << curr->id << std::endl; //bug, id=1413562689
 
-      std::cerr << "end->id " << end->id << std::endl;
+      std::cerr << "end->id " << end->id << std::endl; */
       if (!dst[curr->id] && curr->id >= end->id)
       {
-        std::cerr << "fuck" << std::endl;
+        // std::cerr << "fuck" << std::endl;
         for (const auto &it : curr->inedges)
         {
-          std::cerr << "fuck2" << std::endl;
+          // std::cerr << "fuck2" << std::endl;
           stack.push(it->tail);
         }
         for (const auto &it : curr->aligned_nodes)
@@ -683,10 +683,10 @@ namespace spoa
           "[spoa::Graph::Subgraph] error: invalid ptr to subgraph_to_graph");
     }
 
-    std::cerr << "subgraph func1..." << std::endl;
-    std::cerr << "end.." << nodes_[end].get() << std::endl;
-    std::cerr << "begin.." << nodes_[begin].get() << std::endl;
-    std::cerr << "subgraph func2.." << std::endl;
+    // std::cerr << "subgraph func1..." << std::endl;
+    // std::cerr << "end.." << nodes_[end].get() << std::endl;
+    // std::cerr << "begin.." << nodes_[begin].get() << std::endl;
+    // std::cerr << "subgraph func2.." << std::endl;
     auto is_in_subgraph = ExtractSubgraph(nodes_[end].get(), nodes_[begin].get());
 
     // init subgraph
