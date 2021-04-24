@@ -982,7 +982,7 @@ namespace spoa
         connected_component = DfsUtil(v, visited, nodep2idx);
         connected_component_.clear();
         connected_component_.shrink_to_fit();
-        std::cerr << "connected componet size:" << connected_component.size() << std::endl;
+        // std::cerr << "connected componet size:" << connected_component.size() << std::endl;
         if (connected_component.size() >= largest_cc_size)
         {
           largest_cc_id = id;
@@ -992,7 +992,7 @@ namespace spoa
         id++;
       }
     }
-    std::cerr << "largest connected component size = " << largest_cc_size << std::endl;
+    // std::cerr << "largest connected component size = " << largest_cc_size << std::endl;
     delete[] visited;
 
     // init subgraph

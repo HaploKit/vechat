@@ -183,7 +183,7 @@ namespace racon
     bool Window::generate_consensus(std::shared_ptr<spoa::AlignmentEngine> alignment_engine,
                                     bool trim, bool haplotype)
     {
-        std::cerr << "Using --haplotype for error correction !!! " << std::endl;
+        // std::cerr << "Using --haplotype for error correction !!! " << std::endl;
         //function overloading
         if (!haplotype)
         {
@@ -260,8 +260,8 @@ namespace racon
             }
         }
 
-        std::cerr << "old sequences_[0]:" << sequences_[0].first << std::endl;
-        std::cerr << "old sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
+        // std::cerr << "old sequences_[0]:" << sequences_[0].first << std::endl;
+        // std::cerr << "old sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
         // start to prune the graph
 
@@ -275,9 +275,8 @@ namespace racon
             min_weight *= 20; //Q20 as cutoff if providing base quality
         }
 
-        std::cerr << "min weight " << min_weight << "\n";
-        std::cerr << "Pruning graph " << 1 << "th...\n";
-        std::cerr << "raw graph size:" << graph.nodes().size() << "\n";
+        // std::cerr << "Pruning graph " << 1 << "th...\n";
+        // std::cerr << "raw graph size:" << graph.nodes().size() << "\n";
         graph.PruneGraph(min_weight, min_confidence, min_support);
 
         spoa::Graph largestsubgraph{};
@@ -303,11 +302,11 @@ namespace racon
 
         spoa::Graph *p;
         p = &largestsubgraph;
-        for (auto &it : largestsubgraph.nodes())
-        {
-            std::cerr << "largest subgraph node id:" << it->id << "\n";
-        }
-        std::cerr << "largest graph size:" << largestsubgraph.nodes().size() << "\n";
+        // for (auto &it : largestsubgraph.nodes())
+        // {
+        //     std::cerr << "largest subgraph node id:" << it->id << "\n";
+        // }
+        // std::cerr << "largest graph size:" << largestsubgraph.nodes().size() << "\n";
 
         //TODO, try to consider SubGraph align !!
 
