@@ -315,15 +315,15 @@ namespace racon
         // std::cerr << "Pruning graph " << k + 2 << "th...\n";
         auto local_alignment_engine = spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
 
-        for (uint32_t j = 1; j < sequences_.size(); ++j) //TODO if j=0 ?
+        for (uint32_t j = 0; j < sequences_.size(); ++j) // if j=0 ?
         {
             // std::cerr << "\ntesting breakpoint:" << j << "\t" << sequences_.size() << std::endl;
 
             uint32_t i = rank[j];
 
             spoa::Alignment alignment;
-            if (positions_[i].first < offset && positions_[i].second >
-                                                    sequences_.front().second - offset)
+            if (j == 0 || (positions_[i].first < offset &&
+                           positions_[i].second > sequences_.front().second - offset))
             {
                 // std::cerr << "whole graph mode\n";
                 alignment = alignment_engine->Align(
@@ -387,7 +387,7 @@ namespace racon
 
         // generate the haplotype aware corrected sequence
         // spoa::Alignment alignment;
-        // if (positions_[i].first < offset && //TODO 
+        // if (positions_[i].first < offset && //TODO
         //     positions_[i].second > sequences_.front().second - offset)
         // {
         //     alignment = alignment_engine->Align(
@@ -395,10 +395,10 @@ namespace racon
         // }
         // else
         // {
-            //the length of the target sequence would not be shorter than the length of subgraph
-            //thus local alignment is more suitable
-            auto alignment = local_alignment_engine->Align(
-                sequences_.front().first, sequences_.front().second, largestsubgraph2);
+        //the length of the target sequence would not be shorter than the length of subgraph
+        //thus local alignment is more suitable
+        auto alignment = local_alignment_engine->Align(
+            sequences_.front().first, sequences_.front().second, largestsubgraph2);
         // }
 
         consensus_ = largestsubgraph2.GenerateCorrectedSequence(alignment);

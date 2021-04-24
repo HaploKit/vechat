@@ -195,7 +195,7 @@ void help() {
         "            perform fragment correction instead of contig polishing\n"
         "            (overlaps file should contain dual/self overlaps!)\n"
         "        -p, --haplotype\n"
-        "            perform haplotype-aware read error correction\n"
+        "            perform haplotype-aware fragment correction or contig polishing\n"
         "        -w, --window-length <int>\n"
         "            default: 500\n"
         "            size of window on which POA is performed\n"
