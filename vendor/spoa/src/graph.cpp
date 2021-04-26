@@ -199,7 +199,6 @@ namespace spoa
       {
         coder_[sequence[i]] = num_codes_;
         decoder_[num_codes_++] = sequence[i];
-        std::cerr << "sequence[i]:" << sequence[i] << "\ti=" << i << "\tseq size:" << std::strlen(sequence) << std::endl;
       }
     }
 
