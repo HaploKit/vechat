@@ -2646,11 +2646,11 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/ven
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_basic_string.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_defer.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_polymorphic.dir/all
-vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_memory_cycles.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_complex.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_list.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_bitset.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_array.dir/all
+vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_memory_cycles.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_forward_list.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_memory.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_multimap.dir/all
@@ -2661,10 +2661,10 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/ven
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_stack.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_atomic.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/all
+vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_pod.dir/all
+vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_versioning.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_deque.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_loads.dir/all
-vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_versioning.dir/all
-vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_pod.dir/all
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/all: vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/coverage_boost_variant.dir/all
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage.dir/build
