@@ -641,24 +641,16 @@ namespace spoa
     std::vector<bool> dst(nodes_.size(), false);
     std::stack<const Node *> stack;
     stack.push(begin);
-    int x = 0;
     while (!stack.empty())
     {
       auto curr = stack.top();
 
       stack.pop();
-      /*       std::cerr << "x=" << x++ << std::endl;
-      std::cerr << "curr->inedges.size " << curr->inedges.size() << std::endl; 
-      std::cerr << "curr->code " << curr->code << std::endl; 
-      std::cerr << "curr->id " << curr->id << std::endl; //bug, id=1413562689
 
-      std::cerr << "end->id " << end->id << std::endl; */
       if (!dst[curr->id] && curr->id >= end->id)
       {
-        // std::cerr << "fuck" << std::endl;
         for (const auto &it : curr->inedges)
         {
-          // std::cerr << "fuck2" << std::endl;
           stack.push(it->tail);
         }
         for (const auto &it : curr->aligned_nodes)
@@ -683,10 +675,6 @@ namespace spoa
           "[spoa::Graph::Subgraph] error: invalid ptr to subgraph_to_graph");
     }
 
-    // std::cerr << "subgraph func1..." << std::endl;
-    // std::cerr << "end.." << nodes_[end].get() << std::endl;
-    // std::cerr << "begin.." << nodes_[begin].get() << std::endl;
-    // std::cerr << "subgraph func2.." << std::endl;
     auto is_in_subgraph = ExtractSubgraph(nodes_[end].get(), nodes_[begin].get());
 
     // init subgraph
@@ -818,8 +806,8 @@ namespace spoa
     consensus_.clear();
   }
 
-  // ADD by Xiao Luo
-  void Graph::PruneGraph(int64_t min_weight, double min_confidence, double min_support,double average_weight)
+  //********************** Contributed by Xiao Luo **********************//
+  void Graph::PruneGraph(int64_t min_weight, double min_confidence, double min_support, double average_weight)
   {
     // edge: u -> v
     // confidence(u->v): out-edges of u
@@ -831,17 +819,13 @@ namespace spoa
     double support;
     int64_t total_weight;
 
-    // int k = 0;
     for (const auto &it : edges_)
     {
       if (it->weight < min_weight)
       {
-        // std::cerr<<"k="<<k<<"it->weight:"<<it->weight<<std::endl;
-        // k++;
         edge_indexes_to_prune.emplace_back(1);
         continue;
       }
-      // std::cerr<<"keeping, it->weight:"<<it->weight<<std::endl;
 
       //compute confidence_uv
       total_weight = 0;
@@ -850,9 +834,8 @@ namespace spoa
         total_weight += jt->weight;
       }
       confidence_uv = double(it->weight) / total_weight;
-      support=double(it->weight)/average_weight;
+      support = double(it->weight) / average_weight;
       // std::cerr<<"confidence, support: "<< confidence_uv<<"\t"<<support <<std::endl;
-      
 
       //compute confidence_vu
       total_weight = 0;
@@ -879,14 +862,10 @@ namespace spoa
 
       if (!edge_indexes_to_prune[edge_index])
       {
-        // std::cerr << "keep edge, i:" << i << std::endl;
-        // std::unique_ptr<Edge> ptr = std::move(it);
-        // remained_edges.emplace_back(ptr.get()); // these two lines cause a bug
         remained_edges.emplace_back(std::move(it));
       }
       else
       {
-        // std::cerr << "remove edge, i:" << i << std::endl;
         for (auto &jt : it->tail->outedges)
         {
           if (jt == it.get())
@@ -908,7 +887,6 @@ namespace spoa
         it = nullptr;
       }
       edge_index++;
-      // i++;
     }
 
     edges_.clear();
@@ -1009,8 +987,6 @@ namespace spoa
     std::unordered_map<std::uint32_t, std::uint32_t> v2subv;
     for (const auto &v : largest_connected_component)
     {
-      // std::cerr << "this is the node:" << v << std::endl;
-      //
       v2subv.insert(std::make_pair(v, subgraph.AddNodeForSubgraph(nodes_[v]->code)));
     }
 
@@ -1032,19 +1008,15 @@ namespace spoa
 
   void Graph::AddEdgeForSubgraph(Graph::Node *tail, Graph::Node *head, std::uint32_t weight)
   {
-    // std::cerr << "sequence size= " << sequences_.size() << std::endl;
     edges_.emplace_back(new Edge(tail, head, 0, weight));
-    // edges_.emplace_back(new Edge(tail, head, sequences_.size(), weight));
     tail->outedges.emplace_back(edges_.back().get());
     head->inedges.emplace_back(edges_.back().get());
   }
 
   std::uint32_t Graph::AddNodeForSubgraph(std::uint32_t code)
   {
-    // nodes_.emplace_back(new Node(v, code));
     nodes_.emplace_back(new Node(nodes_.size(), code));
     return nodes_.size() - 1;
-    // return nodes_.back().get();
   }
 
   void Graph::AddWeights(
@@ -1116,7 +1088,6 @@ namespace spoa
     }
     return dst;
   }
-
-  // END
+  //********************** END **********************//
 
 } // namespace spoa

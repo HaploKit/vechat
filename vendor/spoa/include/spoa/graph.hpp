@@ -19,19 +19,16 @@
 namespace spoa
 {
 
-  using Alignment = std::vector<std::pair<std::int32_t, std::int32_t>>;
+  using Alignment = std::vector<std::pair<std::int32_t, std::int32_t> >;
 
   class Graph
   {
   public:
     Graph();
 
-    Graph(const Graph &) = delete; 
-    Graph &operator=(const Graph &) = delete; 
+    Graph(const Graph &) = delete;
+    Graph &operator=(const Graph &) = delete;
 
-    // Graph(const Graph &) = default;
-    // Graph &operator=(const Graph &) = default; 
-    
     Graph(Graph &&) = default;
     Graph &operator=(Graph &&) = default;
 
@@ -102,12 +99,12 @@ namespace spoa
       friend cereal::access;
     };
 
-    const std::vector<std::unique_ptr<Node>> &nodes() const
+    const std::vector<std::unique_ptr<Node> > &nodes() const
     {
       return nodes_;
     }
 
-    const std::vector<std::unique_ptr<Edge>> &edges() const
+    const std::vector<std::unique_ptr<Edge> > &edges() const
     {
       return edges_;
     }
@@ -204,13 +201,13 @@ namespace spoa
         sequences.emplace_back(it->id);
       }
 
-      std::vector<std::pair<std::uint32_t, std::uint32_t>> connections;
+      std::vector<std::pair<std::uint32_t, std::uint32_t> > connections;
       for (const auto &it : edges_)
       {
         connections.emplace_back(it->tail->id, it->head->id);
       }
 
-      std::vector<std::pair<std::uint32_t, std::uint32_t>> aligned_nodes;
+      std::vector<std::pair<std::uint32_t, std::uint32_t> > aligned_nodes;
       for (const auto &it : nodes_)
       {
         for (const auto &jt : it->aligned_nodes)
@@ -251,8 +248,8 @@ namespace spoa
     void load(Archive &archive)
     { // NOLINT
       std::vector<std::uint32_t> sequences;
-      std::vector<std::pair<std::uint32_t, std::uint32_t>> connections;
-      std::vector<std::pair<std::uint32_t, std::uint32_t>> aligned_nodes;
+      std::vector<std::pair<std::uint32_t, std::uint32_t> > connections;
+      std::vector<std::pair<std::uint32_t, std::uint32_t> > aligned_nodes;
       std::vector<std::uint32_t> rank_to_node_id;
       std::vector<std::uint32_t> consensus;
 
@@ -300,17 +297,13 @@ namespace spoa
     }
 
     // ADD by Xiao Luo
-    void PruneGraph(int64_t min_weight, double min_confidence, double min_support,double average_weight);
-    // std::vector<const Node *> DfsUtil(const Node *v, bool visited[]);
-    // std::vector< std::unique_ptr<Node>> DfsUtil( std::unique_ptr<Node>& v, bool visited[]);
-    // std::vector< std::uint32_t> DfsUtil( std::uint32_t v, bool visited[]);
+    void PruneGraph(int64_t min_weight, double min_confidence, double min_support, double average_weight);
     std::vector<std::uint32_t> DfsUtil(
         std::uint32_t v, bool visited[],
         std::unordered_map<Node *, std::uint32_t> &nodep2idx);
 
     void AddEdgeForSubgraph(Node *tail, Node *head, std::uint32_t weight);
-    std::uint32_t AddNodeForSubgraph( std::uint32_t code);
-    // std::uint32_t AddNodeForSubgraph(std::uint32_t v, std::uint32_t code);
+    std::uint32_t AddNodeForSubgraph(std::uint32_t code);
 
     Graph LargestSubgraph();
 
@@ -320,7 +313,7 @@ namespace spoa
         std::uint32_t sequence_len,
         const std::vector<std::uint32_t> &weights);
 
-  std::string GenerateCorrectedSequence(const Alignment &alignment);
+    std::string GenerateCorrectedSequence(const Alignment &alignment);
 
     // END
 
@@ -355,8 +348,8 @@ namespace spoa
     std::vector<std::int32_t> coder_;
     std::vector<std::int32_t> decoder_;
     std::vector<Node *> sequences_;
-    std::vector<std::unique_ptr<Node>> nodes_;
-    std::vector<std::unique_ptr<Edge>> edges_;
+    std::vector<std::unique_ptr<Node> > nodes_;
+    std::vector<std::unique_ptr<Edge> > edges_;
     std::vector<Node *> rank_to_node_;
     std::vector<Node *> consensus_;
     std::vector<std::uint32_t> connected_component_; //xiao

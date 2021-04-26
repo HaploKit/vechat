@@ -95,18 +95,10 @@ namespace racon
 
         std::sort(rank.begin() + 1, rank.end(), [&](uint32_t lhs, uint32_t rhs) { return positions_[lhs].first < positions_[rhs].first; });
 
-        // std::cerr << "Nohap sequences_[0]:" << sequences_.front().first << std::endl;
-        // std::cerr << "Nohap sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
-
         uint32_t offset = 0.01 * sequences_.front().second;
-        for (uint32_t j = 1; j < sequences_.size(); ++j) //j starts from 1, the 0th is the backbone
+        for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
             uint32_t i = rank[j];
-
-            std::cerr << i << " sequences len = " << sequences_[i].second << std::endl;
-            std::cerr << i << " sequences strsize = " << std::strlen(sequences_[i].first) << std::endl;
-            std::cerr << i << " qualities len= " << qualities_[i].second << std::endl;
-            std::cerr << i << " qualities str= " << std::strlen(qualities_[i].first) << std::endl;
 
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
@@ -117,9 +109,6 @@ namespace racon
             }
             else
             {
-                // I guess this is used when the sequence to be aligned is short (NGS or ends of long read)
-                // such that it is not good to perform global alignment on the whole POA graph,
-                // but it is fine if only on the subgraph covered by the target sequence.
                 std::vector<const spoa::Graph::Node *> mapping;
                 auto subgraph = graph.Subgraph(
                     positions_[i].first,
@@ -147,11 +136,10 @@ namespace racon
 
         std::vector<uint32_t> coverages;
         consensus_ = graph.GenerateConsensus(&coverages);
-        // std::cerr << "consensus_ len:" << consensus_.length() << std::endl;
 
         if (type_ == WindowType::kTGS && trim)
         {
-            uint32_t average_coverage = (sequences_.size() - 1) / 2; //maybe too strict in our case
+            uint32_t average_coverage = (sequences_.size() - 1) / 2;
 
             int32_t begin = 0, end = consensus_.size() - 1;
             for (; begin < static_cast<int32_t>(consensus_.size()); ++begin)
@@ -220,7 +208,6 @@ namespace racon
         // the original POA graph construction
         double average_weight; //average phred score (or coverage) for bases in all sequences
         double total_bases_weight = 0.0;
-        // std::uint64_t num_bases = sequences_.front().second;
         std::uint16_t window_len = sequences_.front().second;
 
         //the backbone sequence
@@ -230,14 +217,13 @@ namespace racon
         }
         else
         {
-            std::cerr<<"USing fastq mode!!"<<std::endl;
             for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
             {
                 total_bases_weight += qualities_.front().first[q] - 33;
             }
         }
 
-        for (uint32_t j = 1; j < sequences_.size(); ++j)
+        for (uint32_t j = 1; j < sequences_.size(); ++j) //j starts from 1, the 0th is the backbone
         {
             uint32_t i = rank[j];
 
@@ -246,8 +232,6 @@ namespace racon
             //so the real sequence for current window is: seq[0:seqlen] =
             //std::string(sequences_[i].first).substr(0,sequences_[i].second)
 
-            // std::cerr
-            //     << i << " sequences len = " << sequences_[i].second << std::endl;
             // std::cerr << i << " sequences str = " << sequences_[i].first << std::endl;
             // std::cerr << i << " qualities len= " << qualities_[i].second << std::endl;
             // std::cerr << i << " qualities str= " << qualities_[i].first << std::endl;
@@ -300,101 +284,49 @@ namespace racon
             }
         }
 
-        // std::cerr << "old sequences_[0]:" << sequences_[0].first << std::endl;
-        // std::cerr << "old sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
-
         // start to prune the graph
         average_weight = 2.0 * total_bases_weight / window_len; //2 * average coverage if no quality
         int64_t min_weight = 0;
         // int64_t min_weight = 5 * 2;
         double min_confidence = 0.19;
-        // double min_support = 0.17;
         double min_support = 0.15;
         std::uint32_t num_prune = 3;
 
-        // if (!qualities_[0].first)
-        // {
-        //     min_weight *= 10; //Q10 as cutoff if providing base quality
-        // }
 
         // std::cerr << "Pruning graph " << 1 << "th...\n";
-        // std::cerr << "raw graph size:" << graph.nodes().size() << "\n";
         graph.PruneGraph(min_weight, min_confidence, min_support, average_weight);
-
-        // spoa::Graph largestsubgraph{};
-        // largestsubgraph = graph.LargestSubgraph();
         spoa::Graph *ptr = new spoa::Graph(graph.LargestSubgraph());
-
-        //cause bug if largestsubgraph is too smaller than the original one
-
-        /* if (largestsubgraph.nodes().size() <500)
-        // if (largestsubgraph.nodes().size() / graph.nodes().size() < 0.5)
-        {
-            std::cerr << "This is very bad:" << largestsubgraph.nodes().size()<<"\t"<<
-            graph.nodes().size() << "\n";
-            consensus_ = "";
-            return false;
-        }
-        else{
-            std::cerr << "This is very good:" << largestsubgraph.nodes().size()<<"\t"<<
-            graph.nodes().size() << "\n";
-
-        } */
 
         graph.Clear();
 
-        // TODO prune multiple times
-        // spoa::Graph p1=new spoa::Graph(largestsubgraph);
-        // std::shared_ptr<spoa::Graph> ptr = std::make_shared<spoa::Graph>(largestsubgraph);
-        // for (auto &it : largestsubgraph.nodes())
-        // {
-        //     std::cerr << "largest subgraph node id:" << it->id << "\n";
-        // }
-        // std::cerr << "largest graph size:" << largestsubgraph.nodes().size() << "\n";
-
-        //TODO, try to consider SubGraph align !!
+        // prune graph for multiple times
+        // use local alignment for pruned subgraph rather than global-alignment(may crash due to pruned nodes)  
 
         auto local_alignment_engine = spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
         spoa::Graph *ptr_tmp = nullptr;
 
         for (std::uint32_t k = 0; k < num_prune - 1; k++)
         {
-            std::cerr << "Pruning graph " << k + 2 << "th...\n";
+            // std::cerr << "Pruning graph " << k + 2 << "th...\n";
             // re-align sequences to the pruned subgraph and prune graph iteratively
-            for (uint32_t j = 0; j < sequences_.size(); ++j) // if j=0 ?
+            for (uint32_t j = 0; j < sequences_.size(); ++j) 
             {
-                // std::cerr << "\ntesting breakpoint:" << j << "\t" << sequences_.size() << std::endl;
-
                 uint32_t i = rank[j];
 
                 spoa::Alignment alignment;
                 if (j == 0 || (positions_[i].first < offset &&
                                positions_[i].second > sequences_.front().second - offset))
                 {
-                    // std::cerr << "whole graph mode\n";
                     alignment = alignment_engine->Align(
                         sequences_[i].first, sequences_[i].second, *ptr);
-                    // std::cerr << "alignment size1: " << alignment.size()<<std::endl;
                 }
                 else
                 {
                     //local alignment since raw sequences may be partially aligned to pruned subgraph
-                    // std::cerr << "subgraph mode\n";
-                    // std::vector<const spoa::Graph::Node *> mapping;
-                    // std::cerr << "posi:" << positions_[i].first << " " << positions_[i].second << std::endl;
-                    // auto subgraph = largestsubgraph.Subgraph(
-                    //     positions_[i].first,
-                    //     positions_[i].second,
-                    //     &mapping);
-
-                    // std::cerr << "error  point1" << std::endl;
                     alignment = local_alignment_engine->Align(
                         sequences_[i].first, sequences_[i].second, *ptr);
 
-                    // std::cerr << "error  point2" << std::endl;
-                    // subgraph.UpdateAlignment(mapping, &alignment);
                 }
-                // std::cerr << "alignment finish" << std::endl;
 
                 std::vector<std::uint32_t> weights;
                 if (qualities_[i].first == nullptr)
