@@ -47,7 +47,9 @@ public:
     bool generate_consensus(std::shared_ptr<spoa::AlignmentEngine> alignment_engine,
         bool trim);
     bool generate_consensus(std::shared_ptr<spoa::AlignmentEngine> alignment_engine,
-        bool trim, bool haplotype);
+        bool trim, bool haplotype,double min_confidence,double min_support,
+        std::uint32_t num_prune);
+        
     void add_layer(const char* sequence, uint32_t sequence_length,
         const char* quality, uint32_t quality_length, uint32_t begin,
         uint32_t end);

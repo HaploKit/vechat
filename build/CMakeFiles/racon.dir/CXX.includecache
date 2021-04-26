@@ -468,14 +468,6 @@ vector
 string
 -
 
-/Users/xiaoluo/Documents/CWI/project/github/HapRacon/src/window.cpp
-algorithm
--
-window.hpp
-/Users/xiaoluo/Documents/CWI/project/github/HapRacon/src/window.hpp
-spoa/spoa.hpp
-/Users/xiaoluo/Documents/CWI/project/github/HapRacon/src/spoa/spoa.hpp
-
 /Users/xiaoluo/Documents/CWI/project/github/HapRacon/src/window.hpp
 stdlib.h
 -

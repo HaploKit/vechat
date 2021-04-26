@@ -61,6 +61,9 @@ int main(int argc, char** argv) {
 
     bool drop_unpolished_sequences = true;
     bool haplotype = false;
+    double min_confidence=0.22;
+    double min_support=0.19;
+    std::uint32_t num_prune = 3;
     uint32_t num_threads = 1;
 
     uint32_t cudapoa_batches = 0;
@@ -68,7 +71,7 @@ int main(int argc, char** argv) {
     uint32_t cudaaligner_band_width = 0;
     bool cuda_banded_alignment = false;
 
-    std::string optstring = "ufpw:q:e:m:x:g:t:h";
+    std::string optstring = "ufpdskw:q:e:m:x:g:t:h";
 #ifdef CUDA_ENABLED
     optstring += "bc::";
 #endif
@@ -84,6 +87,15 @@ int main(int argc, char** argv) {
                 break;
             case 'p':
                 haplotype=true;
+                break;
+            case 'd':
+                min_confidence = atof(optarg);
+                break;
+            case 's':
+                min_support = atof(optarg);
+                break;
+            case 'k':
+                num_prune = atoi(optarg);
                 break;
             case 'w':
                 window_length = atoi(optarg);
@@ -156,7 +168,8 @@ int main(int argc, char** argv) {
 
     auto polisher = racon::createPolisher(input_paths[0], input_paths[1],
         input_paths[2], type == 0 ? racon::PolisherType::kC :
-        racon::PolisherType::kF,haplotype, window_length, quality_threshold,
+        racon::PolisherType::kF,haplotype, min_confidence, min_support, 
+        num_prune, window_length, quality_threshold,
         error_threshold, trim, match, mismatch, gap, num_threads,
         cudapoa_batches, cuda_banded_alignment, cudaaligner_batches,
         cudaaligner_band_width);
@@ -196,6 +209,15 @@ void help() {
         "            (overlaps file should contain dual/self overlaps!)\n"
         "        -p, --haplotype\n"
         "            perform haplotype-aware fragment correction or contig polishing\n"
+        "        -d, --min-confidence <float>\n"
+        "            default: 0.22\n"
+        "            minimum confidence for keeping edges in the graph\n"
+        "        -s, --min-support <float>\n"
+        "            default: 0.19\n"
+        "            minimum support for keeping edges in the graph\n"
+        "        -k, --num-prune <int>\n"
+        "            default: 3\n"
+        "            number of iterations for pruning the graph\n"
         "        -w, --window-length <int>\n"
         "            default: 500\n"
         "            size of window on which POA is performed\n"

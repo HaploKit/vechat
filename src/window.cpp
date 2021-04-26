@@ -173,7 +173,8 @@ namespace racon
     }
 
     bool Window::generate_consensus(std::shared_ptr<spoa::AlignmentEngine> alignment_engine,
-                                    bool trim, bool haplotype)
+                                    bool trim, bool haplotype,double min_confidence,double min_support,
+                                    std::uint32_t num_prune)
     {
         // std::cerr << "Using --haplotype for error correction !!! " << std::endl;
         //function overloading
@@ -286,12 +287,11 @@ namespace racon
 
         // start to prune the graph
         average_weight = 2.0 * total_bases_weight / window_len; //2 * average coverage if no quality
-        int64_t min_weight = 0;
+        int64_t min_weight = 0; //deprecated metric 
         // int64_t min_weight = 5 * 2;
-        double min_confidence = 0.19;
-        double min_support = 0.15;
-        std::uint32_t num_prune = 3;
-
+        // double min_confidence = 0.19;
+        // double min_support = 0.15;
+        // std::uint32_t num_prune = 3;
 
         // std::cerr << "Pruning graph " << 1 << "th...\n";
         graph.PruneGraph(min_weight, min_confidence, min_support, average_weight);
@@ -300,7 +300,7 @@ namespace racon
         graph.Clear();
 
         // prune graph for multiple times
-        // use local alignment for pruned subgraph rather than global-alignment(may crash due to pruned nodes)  
+        // use local alignment for pruned subgraph rather than global-alignment(may crash due to pruned nodes)
 
         auto local_alignment_engine = spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
         spoa::Graph *ptr_tmp = nullptr;
@@ -309,7 +309,7 @@ namespace racon
         {
             // std::cerr << "Pruning graph " << k + 2 << "th...\n";
             // re-align sequences to the pruned subgraph and prune graph iteratively
-            for (uint32_t j = 0; j < sequences_.size(); ++j) 
+            for (uint32_t j = 0; j < sequences_.size(); ++j)
             {
                 uint32_t i = rank[j];
 
@@ -325,7 +325,6 @@ namespace racon
                     //local alignment since raw sequences may be partially aligned to pruned subgraph
                     alignment = local_alignment_engine->Align(
                         sequences_[i].first, sequences_[i].second, *ptr);
-
                 }
 
                 std::vector<std::uint32_t> weights;
@@ -356,46 +355,21 @@ namespace racon
             delete ptr;
             ptr = ptr_tmp;
             ptr_tmp = nullptr;
-
-            // lagestsubgraph.Clear();
-            // p = &lagestsubgraph2;
-            // std::cerr << "lagestsubgraph2 node size:" << largestsubgraph2.nodes().size() << std::endl;
         }
 
-        // std::cerr << "lagestsubgraph node size:" << (*p).nodes().size() << std::endl;
-
-        // //only need to correct the target read (the first one, I guess)
-        // std::cerr << "sequences_[0]:" << sequences_[0].first << std::endl;
-        // std::cerr << "sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
-
         // generate the haplotype aware corrected sequence
-        // spoa::Alignment alignment;
-        // if (positions_[i].first < offset && //TODO
-        //     positions_[i].second > sequences_.front().second - offset)
-        // {
-        //     alignment = alignment_engine->Align(
-        //         sequences_.front().first, sequences_.front().second, largestsubgraph2);
-        // }
-        // else
-        // {
         //the length of the target sequence would not be shorter than the length of subgraph
         //thus local alignment is more suitable
         auto alignment = local_alignment_engine->Align(
             sequences_.front().first, sequences_.front().second, *ptr);
-        // }
 
         consensus_ = (*ptr).GenerateCorrectedSequence(alignment);
         delete ptr;
         ptr = nullptr;
-        // std::cerr << "alignment size2: " << alignment.size() << std::endl;
-        // for (const auto &it_align : alignment)
-        // {
-        //     std::cerr << "alignment: " << it_align.first << "\t" << it_align.second << std::endl;
-        // }
         // std::cerr << ">Window consensus: " << consensus_ << std::endl;
 
-        /*  TODO: trim consensus based on base coverages to avoid chimeric sequences    
-
+        trim = false;
+        /*  TODO: trim consensus based on base coverages to avoid chimeric sequences  
     std::vector<uint32_t> coverages;
     consensus_ = graph.GenerateConsensus(&coverages);
 
@@ -422,7 +396,6 @@ namespace racon
         }
     } 
 */
-
         return true;
     }
 }

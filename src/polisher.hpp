@@ -41,7 +41,8 @@ enum class PolisherType {
 class Polisher;
 std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
     const std::string& overlaps_path, const std::string& target_path,
-    PolisherType type,bool haplotype, uint32_t window_length, double quality_threshold,
+    PolisherType type,bool haplotype, double min_confidence, double min_support,
+    uint32_t num_prune, uint32_t window_length, double quality_threshold,
     double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
     uint32_t num_threads, uint32_t cuda_batches = 0,
     bool cuda_banded_alignment = false, uint32_t cudaaligner_batches = 0,
@@ -58,7 +59,8 @@ public:
 
     friend std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
         const std::string& overlaps_path, const std::string& target_path,
-        PolisherType type,bool haplotype, uint32_t window_length, double quality_threshold,
+        PolisherType type,bool haplotype,double min_confidence,double min_support,
+        uint32_t num_prune, uint32_t window_length, double quality_threshold,
         double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
         uint32_t num_threads, uint32_t cuda_batches, bool cuda_banded_alignment,
         uint32_t cudaaligner_batches, uint32_t cudaaligner_band_width);
@@ -67,7 +69,8 @@ protected:
     Polisher(std::unique_ptr<bioparser::Parser<Sequence>> sparser,
         std::unique_ptr<bioparser::Parser<Overlap>> oparser,
         std::unique_ptr<bioparser::Parser<Sequence>> tparser,
-        PolisherType type,bool haplotype, uint32_t window_length, double quality_threshold,
+        PolisherType type,bool haplotype, double min_confidence,double min_support,
+        uint32_t num_prune, uint32_t window_length, double quality_threshold,
         double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
         uint32_t num_threads);
     Polisher(const Polisher&) = delete;
@@ -80,6 +83,10 @@ protected:
 
     PolisherType type_;
     bool haplotype_;
+    double min_confidence_;
+    double min_support_;
+    uint32_t num_prune_;
+
     double quality_threshold_;
     double error_threshold_;
     bool trim_;

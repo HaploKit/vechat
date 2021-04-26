@@ -58,7 +58,8 @@ uint64_t shrinkToFit(std::vector<std::unique_ptr<T>>& src, uint64_t begin) {
 
 std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
     const std::string& overlaps_path, const std::string& target_path,
-    PolisherType type,bool haplotype, uint32_t window_length, double quality_threshold,
+    PolisherType type,bool haplotype, double min_confidence, double min_support,
+    uint32_t num_prune, uint32_t window_length, double quality_threshold,
     double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
     uint32_t num_threads, uint32_t cudapoa_batches, bool cuda_banded_alignment,
     uint32_t cudaaligner_batches, uint32_t cudaaligner_band_width) {
@@ -158,7 +159,8 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
         (void) cuda_banded_alignment;
         (void) cudaaligner_band_width;
         return std::unique_ptr<Polisher>(new Polisher(std::move(sparser),
-                    std::move(oparser), std::move(tparser), type, haplotype, window_length,
+                    std::move(oparser), std::move(tparser), type, haplotype, 
+                    min_confidence, min_support, num_prune, window_length,
                     quality_threshold, error_threshold, trim, match, mismatch, gap,
                     num_threads));
     }
@@ -167,12 +169,14 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
 Polisher::Polisher(std::unique_ptr<bioparser::Parser<Sequence>> sparser,
     std::unique_ptr<bioparser::Parser<Overlap>> oparser,
     std::unique_ptr<bioparser::Parser<Sequence>> tparser,
-    PolisherType type,bool haplotype, uint32_t window_length, double quality_threshold,
+    PolisherType type,bool haplotype, double min_confidence, double min_support,
+    uint32_t num_prune, uint32_t window_length, double quality_threshold,
     double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
     uint32_t num_threads)
         : sparser_(std::move(sparser)), oparser_(std::move(oparser)),
-        tparser_(std::move(tparser)), type_(type),haplotype_(haplotype), quality_threshold_(
-        quality_threshold), error_threshold_(error_threshold), trim_(trim),
+        tparser_(std::move(tparser)), type_(type),haplotype_(haplotype), 
+        min_confidence_(min_confidence), min_support_(min_support), num_prune_(num_prune),
+        quality_threshold_(quality_threshold), error_threshold_(error_threshold), trim_(trim),
         alignment_engines_(), sequences_(), dummy_quality_(window_length, '!'),
         window_length_(window_length), windows_(),
         thread_pool_(std::make_shared<thread_pool::ThreadPool>(num_threads)),
@@ -495,12 +499,12 @@ void Polisher::polish(std::vector<std::unique_ptr<Sequence>>& dst,
             [&](uint64_t j) -> bool {
                 auto it = thread_pool_->thread_ids().find(std::this_thread::get_id());  // NOLINT
                 return windows_[j]->generate_consensus(
-                    alignment_engines_[it->second], trim_, haplotype_);
+                    alignment_engines_[it->second], trim_, haplotype_,
+                    min_confidence_, min_support_, num_prune_);
             }, i));
         }
     }
     else{
-        std::cerr<<"window length:"<<window_length_<<std::endl;
         for (uint64_t i = 0; i < windows_.size(); ++i) {
         thread_futures.emplace_back(thread_pool_->Submit(
             [&](uint64_t j) -> bool {
