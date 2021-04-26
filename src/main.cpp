@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     uint32_t cudaaligner_band_width = 0;
     bool cuda_banded_alignment = false;
 
-    std::string optstring = "ufp:d:s:k:w:q:e:m:x:g:t:h";
+    std::string optstring = "ufpd:s:k:w:q:e:m:x:g:t:h";
 #ifdef CUDA_ENABLED
     optstring += "bc::";
 #endif
