@@ -224,7 +224,7 @@ namespace racon
         std::uint16_t window_len = sequences_.front().second;
 
         //the backbone sequence
-        if (qualities_[i].first == nullptr)
+        if (qualities_.front().first == nullptr)
         {
             total_bases_weight += sequences_.front().second;
         }
