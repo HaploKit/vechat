@@ -647,7 +647,7 @@ namespace spoa
       auto curr = stack.top();
 
       stack.pop();
-/*       std::cerr << "x=" << x++ << std::endl;
+      /*       std::cerr << "x=" << x++ << std::endl;
       std::cerr << "curr->inedges.size " << curr->inedges.size() << std::endl; 
       std::cerr << "curr->code " << curr->code << std::endl; 
       std::cerr << "curr->id " << curr->id << std::endl; //bug, id=1413562689
@@ -828,13 +828,13 @@ namespace spoa
     uint64_t edge_index = 0;
     double confidence_uv;
     double confidence_vu;
+    double support;
     int64_t total_weight;
-    min_support = 0; // TODO, but seems no improvement
 
     // int k = 0;
     for (const auto &it : edges_)
     {
-      if (it->weight < (2 * min_weight)) //TODO: or remove 2*
+      if (it->weight < min_weight)
       {
         // std::cerr<<"k="<<k<<"it->weight:"<<it->weight<<std::endl;
         // k++;
@@ -859,7 +859,7 @@ namespace spoa
       }
       confidence_vu = double(it->weight) / total_weight;
 
-      if (confidence_uv >= min_confidence && confidence_vu >= min_confidence)
+      if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
       {
         edge_indexes_to_prune.emplace_back(0);
       }

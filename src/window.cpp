@@ -215,9 +215,14 @@ namespace racon
 
         uint32_t offset = 0.01 * sequences_.front().second;
         // the original POA graph construction
+        double average_weight; //average phred score (or coverage) for bases in all sequences
+        std::uint64_t num_bases;
+
         for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
+            std::cerr <<i<< " sequences len = " << sequences_[i].second << std::endl;
             uint32_t i = rank[j];
+            num_bases += sequences_[i].second;
 
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
@@ -265,7 +270,7 @@ namespace racon
 
         // start to prune the graph
 
-        int64_t min_weight = 5;
+        int64_t min_weight = 5 * 2;
         double min_confidence = 0.18;
         double min_support = 0.1;
         std::uint32_t num_prune = 4;
@@ -281,7 +286,7 @@ namespace racon
 
         // spoa::Graph largestsubgraph{};
         // largestsubgraph = graph.LargestSubgraph();
-        spoa::Graph *ptr=new spoa::Graph(graph.LargestSubgraph());
+        spoa::Graph *ptr = new spoa::Graph(graph.LargestSubgraph());
 
         //cause bug if largestsubgraph is too smaller than the original one
 
@@ -313,7 +318,7 @@ namespace racon
         //TODO, try to consider SubGraph align !!
 
         auto local_alignment_engine = spoa::AlignmentEngine::Create(spoa::AlignmentType::kSW, 3, -5, -4);
-        spoa::Graph *ptr_tmp=nullptr;
+        spoa::Graph *ptr_tmp = nullptr;
 
         for (std::uint32_t k = 0; k < num_prune - 1; k++)
         {
@@ -378,10 +383,10 @@ namespace racon
 
             // spoa::Graph largestsubgraph2{};
             // largestsubgraph2 = largestsubgraph.LargestSubgraph();
-            ptr_tmp=new spoa::Graph((*ptr).LargestSubgraph());
+            ptr_tmp = new spoa::Graph((*ptr).LargestSubgraph());
             delete ptr;
-            ptr=ptr_tmp;
-            ptr_tmp=nullptr;
+            ptr = ptr_tmp;
+            ptr_tmp = nullptr;
 
             // lagestsubgraph.Clear();
             // p = &lagestsubgraph2;
@@ -412,7 +417,7 @@ namespace racon
 
         consensus_ = (*ptr).GenerateCorrectedSequence(alignment);
         delete ptr;
-        ptr=nullptr;
+        ptr = nullptr;
         // std::cerr << "alignment size2: " << alignment.size() << std::endl;
         // for (const auto &it_align : alignment)
         // {
