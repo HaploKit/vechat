@@ -294,7 +294,7 @@ namespace racon
         average_weight = 2.0 * total_bases_weight / window_len; //2 * average coverage if no quality
         int64_t min_weight = 0;
         // int64_t min_weight = 5 * 2;
-        double min_confidence = 0.18;
+        double min_confidence = 0.19;
         // double min_support = 0.17;
         double min_support = 0.15;
         std::uint32_t num_prune = 3;
