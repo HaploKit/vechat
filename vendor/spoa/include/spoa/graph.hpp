@@ -300,7 +300,7 @@ namespace spoa
     }
 
     // ADD by Xiao Luo
-    void PruneGraph(int64_t min_weight, double min_confidence, double min_support);
+    void PruneGraph(int64_t min_weight, double min_confidence, double min_support,double average_weight);
     // std::vector<const Node *> DfsUtil(const Node *v, bool visited[]);
     // std::vector< std::unique_ptr<Node>> DfsUtil( std::unique_ptr<Node>& v, bool visited[]);
     // std::vector< std::uint32_t> DfsUtil( std::uint32_t v, bool visited[]);

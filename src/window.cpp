@@ -34,7 +34,6 @@ namespace racon
         : id_(id), rank_(rank), type_(type), consensus_(), sequences_(),
           qualities_(), positions_()
     {
-
         sequences_.emplace_back(backbone, backbone_length);
         qualities_.emplace_back(quality, quality_length);
         positions_.emplace_back(0, 0);
@@ -103,6 +102,11 @@ namespace racon
         for (uint32_t j = 1; j < sequences_.size(); ++j) //j starts from 1, the 0th is the backbone
         {
             uint32_t i = rank[j];
+
+            std::cerr << i << " sequences len = " << sequences_[i].second << std::endl;
+            std::cerr << i << " sequences strsize = " << std::strlen(sequences_[i].first) << std::endl;
+            std::cerr << i << " qualities len= " << qualities_[i].second << std::endl;
+            std::cerr << i << " qualities str= " << std::strlen(qualities_[i].first) << std::endl;
 
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
@@ -197,7 +201,6 @@ namespace racon
             return false;
         }
 
-        // it seems that sequences_ stores the whole sequence of read, not window sequence
         spoa::Graph graph{};
         graph.AddAlignment(
             spoa::Alignment(),
@@ -216,13 +219,32 @@ namespace racon
         uint32_t offset = 0.01 * sequences_.front().second;
         // the original POA graph construction
         double average_weight; //average phred score (or coverage) for bases in all sequences
-        std::uint64_t num_bases;
+        double total_bases_weight = 0.0;
+        // std::uint64_t num_bases = sequences_.front().second;
+        std::uint16_t window_len = sequences_.front().second;
+        for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
+        {
+            total_bases_weight += qualities_.front().first[q];
+        }
 
         for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
-            std::cerr <<i<< " sequences len = " << sequences_[i].second << std::endl;
             uint32_t i = rank[j];
-            num_bases += sequences_[i].second;
+            for (std::uint16_t q = 0; q < qualities_[i].second; ++q)
+            {
+                total_bases_weight += qualities_[i].first[q];
+            }
+
+            //sequences_.first is the subsequence(starts from the current window to the end of read)
+            //sequences_.second is the length of window-sequence, say ~500. so does qualities_
+            //so the real sequence for current window is: seq[0:seqlen] =
+            //std::string(sequences_[i].first).substr(0,sequences_[i].second)
+
+            // std::cerr
+            //     << i << " sequences len = " << sequences_[i].second << std::endl;
+            // std::cerr << i << " sequences str = " << sequences_[i].first << std::endl;
+            // std::cerr << i << " qualities len= " << qualities_[i].second << std::endl;
+            // std::cerr << i << " qualities str= " << qualities_[i].first << std::endl;
 
             spoa::Alignment alignment;
             if (positions_[i].first < offset && positions_[i].second >
@@ -269,11 +291,12 @@ namespace racon
         // std::cerr << "old sequences_[rank[0]]:" << sequences_[rank[0]].first << std::endl;
 
         // start to prune the graph
-
-        int64_t min_weight = 5 * 2;
+        average_weight = 2.0 * total_bases_weight / window_len; //2 * average coverage if no quality
+        int64_t min_weight = 0;
+        // int64_t min_weight = 5 * 2;
         double min_confidence = 0.18;
-        double min_support = 0.1;
-        std::uint32_t num_prune = 4;
+        double min_support = 0.17;
+        std::uint32_t num_prune = 3;
 
         // if (!qualities_[0].first)
         // {
@@ -282,7 +305,7 @@ namespace racon
 
         // std::cerr << "Pruning graph " << 1 << "th...\n";
         // std::cerr << "raw graph size:" << graph.nodes().size() << "\n";
-        graph.PruneGraph(min_weight, min_confidence, min_support);
+        graph.PruneGraph(min_weight, min_confidence, min_support, average_weight);
 
         // spoa::Graph largestsubgraph{};
         // largestsubgraph = graph.LargestSubgraph();
@@ -379,7 +402,7 @@ namespace racon
             }
 
             // std::cerr << "testing breakpoint:" << largestsubgraph.edges().size() << std::endl;
-            (*ptr).PruneGraph(min_weight, min_confidence, min_support);
+            (*ptr).PruneGraph(min_weight, min_confidence, min_support, average_weight);
 
             // spoa::Graph largestsubgraph2{};
             // largestsubgraph2 = largestsubgraph.LargestSubgraph();

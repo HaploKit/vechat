@@ -819,7 +819,7 @@ namespace spoa
   }
 
   // ADD by Xiao Luo
-  void Graph::PruneGraph(int64_t min_weight, double min_confidence, double min_support)
+  void Graph::PruneGraph(int64_t min_weight, double min_confidence, double min_support,double average_weight)
   {
     // edge: u -> v
     // confidence(u->v): out-edges of u
@@ -850,6 +850,9 @@ namespace spoa
         total_weight += jt->weight;
       }
       confidence_uv = double(it->weight) / total_weight;
+      support=double(it->weight)/average_weight;
+      std::cerr<<"confidence, support: "<< confidence_uv<<"\t"<<support <<std::endl;
+      
 
       //compute confidence_vu
       total_weight = 0;
