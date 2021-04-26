@@ -222,9 +222,11 @@ namespace racon
         double total_bases_weight = 0.0;
         // std::uint64_t num_bases = sequences_.front().second;
         std::uint16_t window_len = sequences_.front().second;
+
+        //the backbone sequence
         for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
         {
-            total_bases_weight += qualities_.front().first[q];
+            total_bases_weight += qualities_.front().first[q] - 33;
         }
 
         for (uint32_t j = 1; j < sequences_.size(); ++j)
@@ -232,7 +234,7 @@ namespace racon
             uint32_t i = rank[j];
             for (std::uint16_t q = 0; q < qualities_[i].second; ++q)
             {
-                total_bases_weight += qualities_[i].first[q];
+                total_bases_weight += qualities_[i].first[q] - 33;
             }
 
             //sequences_.first is the subsequence(starts from the current window to the end of read)
