@@ -224,18 +224,22 @@ namespace racon
         std::uint16_t window_len = sequences_.front().second;
 
         //the backbone sequence
-        for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
+        if (qualities_[i].first == nullptr)
         {
-            total_bases_weight += qualities_.front().first[q] - 33;
+            total_bases_weight += sequences_.front().second;
+        }
+        else
+        {
+            std::cerr<<"USing fastq mode!!"<<std::endl;
+            for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
+            {
+                total_bases_weight += qualities_.front().first[q] - 33;
+            }
         }
 
         for (uint32_t j = 1; j < sequences_.size(); ++j)
         {
             uint32_t i = rank[j];
-            for (std::uint16_t q = 0; q < qualities_[i].second; ++q)
-            {
-                total_bases_weight += qualities_[i].first[q] - 33;
-            }
 
             //sequences_.first is the subsequence(starts from the current window to the end of read)
             //sequences_.second is the length of window-sequence, say ~500. so does qualities_
@@ -279,6 +283,8 @@ namespace racon
                 graph.AddAlignment(
                     alignment,
                     sequences_[i].first, sequences_[i].second);
+
+                total_bases_weight += sequences_[i].second;
             }
             else
             {
@@ -286,6 +292,11 @@ namespace racon
                     alignment,
                     sequences_[i].first, sequences_[i].second,
                     qualities_[i].first, qualities_[i].second);
+
+                for (std::uint16_t q = 0; q < qualities_[i].second; ++q)
+                {
+                    total_bases_weight += qualities_[i].first[q] - 33;
+                }
             }
         }
 
