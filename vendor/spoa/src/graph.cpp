@@ -851,7 +851,7 @@ namespace spoa
       }
       confidence_uv = double(it->weight) / total_weight;
       support=double(it->weight)/average_weight;
-      std::cerr<<"confidence, support: "<< confidence_uv<<"\t"<<support <<std::endl;
+      // std::cerr<<"confidence, support: "<< confidence_uv<<"\t"<<support <<std::endl;
       
 
       //compute confidence_vu
