@@ -296,7 +296,7 @@ namespace racon
         // int64_t min_weight = 5 * 2;
         double min_confidence = 0.18;
         // double min_support = 0.17;
-        double min_support = 0.16;
+        double min_support = 0.15;
         std::uint32_t num_prune = 3;
 
         // if (!qualities_[0].first)
