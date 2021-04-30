@@ -818,6 +818,14 @@ namespace spoa
     double support;
     int64_t total_weight;
 
+    // min_support is used for strong correlated edges
+    double delta = 1.2;                                    //amplification factor
+    double min_support_moderate = min_support * delta;     //moderate correlated edges
+    double min_support_weak = min_support * delta * delta; //weak correlated edges
+    bool if_strong = false;
+    bool if_moderate = false;
+    bool if_weak = false;
+
     for (const auto &it : edges_)
     {
       if (it->weight < min_weight)
@@ -844,14 +852,43 @@ namespace spoa
       }
       confidence_vu = double(it->weight) / total_weight;
 
-      if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
+      //determine the type of edge
+      if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
       {
-        edge_indexes_to_prune.emplace_back(0);
+        if_strong = true;
+      }
+      else if (it->tail->outedges.size() >= 2 && it->head->inedges.size() >= 2)
+      {
+        if_weak = true;
       }
       else
       {
+        if_moderate = true;
+      }
+
+      if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
+      {
+        if (if_moderate && support >= min_support_moderate)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+        }
+        else if (if_weak && support >= min_support_weak)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+        }
+        else
+        {
+          edge_indexes_to_prune.emplace_back(1);
+        }
+      }
+      else
+      { //prune
         edge_indexes_to_prune.emplace_back(1);
       }
+
+      if_strong = false;
+      if_moderate = false;
+      if_weak = false;
     }
 
     std::vector<std::unique_ptr<Edge> > remained_edges;
@@ -1050,6 +1087,13 @@ namespace spoa
       std::cerr << "This read fails to be aligned to the POA, skipping it..." << std::endl;
       return;
     }
+
+    // if (alignment.empty())
+    // {
+    //   sequences_.emplace_back(AddSequence(sequence, weights, 0, sequence_len));
+    //   TopologicalSort();
+    //   return;
+    // }
 
     Node *prev = nullptr;
     Node *curr = nullptr;
