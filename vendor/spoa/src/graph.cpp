@@ -819,7 +819,7 @@ namespace spoa
     int64_t total_weight;
 
     // min_support is used for strong correlated edges
-    double delta = 1.2;                                    //amplification factor
+    double delta = 1.;                                    //amplification factor
     double min_support_moderate = min_support * delta;     //moderate correlated edges
     double min_support_weak = min_support * delta * delta; //weak correlated edges
     bool if_strong = false;
