@@ -868,9 +868,14 @@ namespace spoa
 
       if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
       {
-        if (if_moderate && support >= min_support_moderate)
+        if (if_strong)
         {
           edge_indexes_to_prune.emplace_back(0);
+        }
+        else if (if_moderate && support >= min_support_moderate)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+          // std::cerr<<"keep moderate edge... "<<"support = "<<support<<std::endl;
         }
         else if (if_weak && support >= min_support_weak)
         {
@@ -878,11 +883,15 @@ namespace spoa
         }
         else
         {
+          // std::cerr << "prune moderate or weak edge... "
+          //           << "support = " << support << " ;min_support = " << min_support << std::endl;
           edge_indexes_to_prune.emplace_back(1);
         }
       }
       else
       { //prune
+        // std::cerr << "just prune edge... "
+        //           << "support = " << support << std::endl;
         edge_indexes_to_prune.emplace_back(1);
       }
 
