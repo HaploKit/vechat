@@ -820,15 +820,12 @@ namespace spoa
 
     // min_support is used for strong correlated edges
     // double delta = 1.2;                                    //amplification factor
-    double delta = 1;                                      //amplification factor
+    double delta = 1;                                    //amplification factor
     double min_support_moderate = min_support * delta;     //moderate correlated edges
     double min_support_weak = min_support * delta * delta; //weak correlated edges
     bool if_strong = false;
     bool if_moderate = false;
     bool if_weak = false;
-
-    uint16_t max_degree = 2; //for diploid
-    uint16_t weight_rank;
 
     for (const auto &it : edges_)
     {
@@ -840,44 +837,20 @@ namespace spoa
 
       //compute confidence_uv
       total_weight = 0;
-      weight_rank = 0;
       for (const auto &jt : it->tail->outedges)
       {
         total_weight += jt->weight;
-        if (jt->weight >= it->weight)
-        {
-          weight_rank++;
-        }
       }
-
-      if (weight_rank > max_degree)
-      {
-        edge_indexes_to_prune.emplace_back(1);
-        continue;
-      }
-
       confidence_uv = double(it->weight) / total_weight;
       support = double(it->weight) / average_weight;
       // std::cerr<<"confidence, support: "<< confidence_uv<<"\t"<<support <<std::endl;
 
       //compute confidence_vu
       total_weight = 0;
-      weight_rank = 0;
       for (const auto &jt : it->head->inedges)
       {
         total_weight += jt->weight;
-        if (jt->weight >= it->weight)
-        {
-          weight_rank++;
-        }
       }
-
-      if (weight_rank > max_degree)
-      {
-        edge_indexes_to_prune.emplace_back(1);
-        continue;
-      }
-
       confidence_vu = double(it->weight) / total_weight;
 
       //determine the type of edge
