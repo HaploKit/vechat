@@ -293,7 +293,7 @@ namespace racon
         // double min_support = 0.15;
         // std::uint32_t num_prune = 3;
 
-        // std::cerr << "Pruning graph " << 1 << "th...\n";
+        std::cerr << "Pruning_graph_1"<< "\t";
         graph.PruneGraph(min_weight, min_confidence, min_support, average_weight);
         spoa::Graph *ptr = new spoa::Graph(graph.LargestSubgraph());
 
@@ -347,6 +347,7 @@ namespace racon
             }
 
             // std::cerr << "testing breakpoint:" << largestsubgraph.edges().size() << std::endl;
+            std::cerr << "Pruning_graph_23"<< "\t";
             (*ptr).PruneGraph(min_weight, min_confidence, min_support, average_weight);
 
             // spoa::Graph largestsubgraph2{};
