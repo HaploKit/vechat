@@ -845,17 +845,17 @@ namespace spoa
       for (const auto &jt : it->tail->outedges)
       {
         total_weight += jt->weight;
-        // if (jt->weight >= it->weight)
-        // {
-        //   weight_rank++;
-        // }
+        if (jt->weight >= it->weight)
+        {
+          weight_rank++;
+        }
       }
 
-      // if (weight_rank > max_degree)
-      // {
-      //   edge_indexes_to_prune.emplace_back(1);
-      //   continue;
-      // }
+      if (weight_rank > max_degree)
+      {
+        edge_indexes_to_prune.emplace_back(1);
+        continue;
+      }
 
       confidence_uv = double(it->weight) / total_weight;
       support = double(it->weight) / average_weight;
@@ -867,62 +867,60 @@ namespace spoa
       for (const auto &jt : it->head->inedges)
       {
         total_weight += jt->weight;
-        // if (jt->weight >= it->weight)
-        // {
-        //   weight_rank++;
-        // }
+        if (jt->weight >= it->weight)
+        {
+          weight_rank++;
+        }
       }
 
-      // if (weight_rank > max_degree)
-      // {
-      //   edge_indexes_to_prune.emplace_back(1);
-      //   continue;
-      // }
+      if (weight_rank > max_degree)
+      {
+        edge_indexes_to_prune.emplace_back(1);
+        continue;
+      }
 
       confidence_vu = double(it->weight) / total_weight;
       // std::cerr<<confidence_vu<<"\t";
 
       //determine the type of edge
-      // if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
-      // {
-      //   if_strong = true;
-      //   // std::cerr<<"strong"<<std::endl;
-      // }
-      // else if (it->tail->outedges.size() >= 2 && it->head->inedges.size() >= 2)
-      // {
-      //   if_weak = true;
-      //   // std::cerr<<"weak"<<std::endl;
+      if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
+      {
+        if_strong = true;
+        // std::cerr<<"strong"<<std::endl;
+      }
+      else if (it->tail->outedges.size() >= 2 && it->head->inedges.size() >= 2)
+      {
+        if_weak = true;
+        // std::cerr<<"weak"<<std::endl;
 
-      // }
-      // else
-      // {
-      //   if_moderate = true;
-      //   // std::cerr<<"moderate"<<std::endl;
-      // }
+      }
+      else
+      {
+        if_moderate = true;
+        // std::cerr<<"moderate"<<std::endl;
+      }
 
       if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
       {
-        edge_indexes_to_prune.emplace_back(0);
-
-        // if (if_strong)
-        // {
-        //   edge_indexes_to_prune.emplace_back(0);
-        // }
-        // else if (if_moderate && support >= min_support_moderate)
-        // {
-        //   edge_indexes_to_prune.emplace_back(0);
-        //   // std::cerr<<"keep moderate edge... "<<"support = "<<support<<std::endl;
-        // }
-        // else if (if_weak && support >= min_support_weak)
-        // {
-        //   edge_indexes_to_prune.emplace_back(0);
-        // }
-        // else
-        // {
-        //   // std::cerr << "prune moderate or weak edge... "
-        //   //           << "support = " << support << " ;min_support = " << min_support << std::endl;
-        //   edge_indexes_to_prune.emplace_back(1);
-        // }
+        if (if_strong)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+        }
+        else if (if_moderate && support >= min_support_moderate)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+          // std::cerr<<"keep moderate edge... "<<"support = "<<support<<std::endl;
+        }
+        else if (if_weak && support >= min_support_weak)
+        {
+          edge_indexes_to_prune.emplace_back(0);
+        }
+        else
+        {
+          // std::cerr << "prune moderate or weak edge... "
+          //           << "support = " << support << " ;min_support = " << min_support << std::endl;
+          edge_indexes_to_prune.emplace_back(1);
+        }
       }
       else
       { //prune
@@ -931,9 +929,9 @@ namespace spoa
         edge_indexes_to_prune.emplace_back(1);
       }
 
-      // if_strong = false;
-      // if_moderate = false;
-      // if_weak = false;
+      if_strong = false;
+      if_moderate = false;
+      if_weak = false;
     }
 
     std::vector<std::unique_ptr<Edge> > remained_edges;
