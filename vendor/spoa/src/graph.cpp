@@ -859,7 +859,7 @@ namespace spoa
 
       confidence_uv = double(it->weight) / total_weight;
       support = double(it->weight) / average_weight;
-      std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
+      // std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
 
       //compute confidence_vu
       total_weight = 0;
@@ -880,24 +880,24 @@ namespace spoa
       }
 
       confidence_vu = double(it->weight) / total_weight;
-      std::cerr<<confidence_vu<<"\t";
+      // std::cerr<<confidence_vu<<"\t";
 
       //determine the type of edge
       if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
       {
         if_strong = true;
-        std::cerr<<"strong"<<std::endl;
+        // std::cerr<<"strong"<<std::endl;
       }
       else if (it->tail->outedges.size() >= 2 && it->head->inedges.size() >= 2)
       {
         if_weak = true;
-        std::cerr<<"weak"<<std::endl;
+        // std::cerr<<"weak"<<std::endl;
 
       }
       else
       {
         if_moderate = true;
-        std::cerr<<"moderate"<<std::endl;
+        // std::cerr<<"moderate"<<std::endl;
       }
 
       if (confidence_uv >= min_confidence && confidence_vu >= min_confidence && support >= min_support)
