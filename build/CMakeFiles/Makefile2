@@ -74,11 +74,12 @@ CMAKE_BINARY_DIR = /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build
 
 # The main recursive "all" target.
 all: CMakeFiles/racon.dir/all
+all: vendor/rampler/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: vendor/rampler/preinstall
 
 .PHONY : preinstall
 
@@ -88,6 +89,7 @@ clean: vendor/spoa/vendor/bioparser/clean
 clean: vendor/spoa/clean
 clean: vendor/thread_pool/clean
 clean: vendor/edlib/clean
+clean: vendor/rampler/clean
 
 .PHONY : clean
 
@@ -116,6 +118,43 @@ vendor/edlib/clean: vendor/edlib/CMakeFiles/runTests.dir/clean
 vendor/edlib/clean: vendor/edlib/CMakeFiles/edlib_static.dir/clean
 
 .PHONY : vendor/edlib/clean
+
+#=============================================================================
+# Directory level rules for directory vendor/rampler
+
+# Recursive "all" directory target.
+vendor/rampler/all: vendor/rampler/CMakeFiles/rampler.dir/all
+
+.PHONY : vendor/rampler/all
+
+# Recursive "preinstall" directory target.
+vendor/rampler/preinstall:
+
+.PHONY : vendor/rampler/preinstall
+
+# Recursive "clean" directory target.
+vendor/rampler/clean: vendor/rampler/CMakeFiles/rampler.dir/clean
+vendor/rampler/clean: vendor/rampler/vendor/bioparser/vendor/biosoup/clean
+
+.PHONY : vendor/rampler/clean
+
+#=============================================================================
+# Directory level rules for directory vendor/rampler/vendor/bioparser/vendor/biosoup
+
+# Recursive "all" directory target.
+vendor/rampler/vendor/bioparser/vendor/biosoup/all:
+
+.PHONY : vendor/rampler/vendor/bioparser/vendor/biosoup/all
+
+# Recursive "preinstall" directory target.
+vendor/rampler/vendor/bioparser/vendor/biosoup/preinstall:
+
+.PHONY : vendor/rampler/vendor/bioparser/vendor/biosoup/preinstall
+
+# Recursive "clean" directory target.
+vendor/rampler/vendor/bioparser/vendor/biosoup/clean:
+
+.PHONY : vendor/rampler/vendor/bioparser/vendor/biosoup/clean
 
 #=============================================================================
 # Directory level rules for directory vendor/spoa
@@ -498,12 +537,12 @@ CMakeFiles/racon.dir/all: vendor/spoa/CMakeFiles/spoa.dir/all
 CMakeFiles/racon.dir/all: vendor/edlib/CMakeFiles/edlib_static.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/racon.dir/build.make CMakeFiles/racon.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/racon.dir/build.make CMakeFiles/racon.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=34,35,36 "Built target racon"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=34,35 "Built target racon"
 .PHONY : CMakeFiles/racon.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/racon.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/racon.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : CMakeFiles/racon.dir/rule
@@ -579,12 +618,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_vector.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=26 "Built target coverage_user_data_adapters"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target coverage_user_data_adapters"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_user_data_adapters.dir/rule
@@ -660,12 +699,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_set.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target coverage_unordered_multimap"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=23 "Built target coverage_unordered_multimap"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_multimap.dir/rule
@@ -1767,12 +1806,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_valarray.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_basic_string"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=47 "Built target test_basic_string"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string.dir/rule
@@ -1821,12 +1860,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_structs_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=80 "Built target test_stack_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_stack_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/rule
@@ -1848,12 +1887,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_stack"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=80 "Built target test_stack"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_stack.dir/rule
@@ -1902,12 +1941,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_multiset.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_portable_binary_archive"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=74 "Built target test_portable_binary_archive"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive.dir/rule
@@ -2010,12 +2049,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_set_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target coverage_valarray"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=26 "Built target coverage_valarray"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/rule
@@ -2037,12 +2076,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_valarray.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=57 "Built target test_forward_list"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_forward_list"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/rule
@@ -2064,12 +2103,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_forward_list.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=77 "Built target test_queue_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_queue_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue_32.dir/rule
@@ -2145,12 +2184,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_map.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=74 "Built target test_portable_binary_archive_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_portable_binary_archive_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_portable_binary_archive_32.dir/rule
@@ -2226,12 +2265,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_unordered_set.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=62 "Built target test_map_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_map_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/rule
@@ -2253,12 +2292,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_pod"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=71 "Built target test_pod"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod.dir/rule
@@ -2361,12 +2400,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=48 "Built target test_bitset"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_bitset"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/rule
@@ -2388,12 +2427,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_bitset.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_memory_cycles"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=65 "Built target test_memory_cycles"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/rule
@@ -2415,12 +2454,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_multiset"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=68 "Built target test_multiset"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset.dir/rule
@@ -2496,12 +2535,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multimap_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target portability_test32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=32 "Built target portability_test32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test32.dir/rule
@@ -2749,12 +2788,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_unordered_multiset.dir/clean
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_map"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=62 "Built target test_map"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/rule
@@ -2776,12 +2815,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_map.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=54 "Built target test_defer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_defer"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/rule
@@ -2803,12 +2842,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_defer.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_queue"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=77 "Built target test_queue"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/rule
@@ -2830,12 +2869,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_queue.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=23 "Built target coverage_unordered_map"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target coverage_unordered_map"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/rule
@@ -2857,12 +2896,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_unordered_map.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=45 "Built target test_atomic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_atomic"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic.dir/rule
@@ -2911,12 +2950,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_polymorphic.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=60 "Built target test_load_construct"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_load_construct"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/rule
@@ -2938,12 +2977,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_deque"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=56 "Built target test_deque"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque.dir/rule
@@ -3046,12 +3085,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/coverage_versioning.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=68 "Built target test_multiset_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_multiset_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/rule
@@ -3073,7 +3112,7 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_multiset_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=59 "Built target test_list_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=60 "Built target test_list_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3100,7 +3139,7 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=53 "Built target test_complex_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=54 "Built target test_complex_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3181,12 +3220,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_tuple_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_complex"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=53 "Built target test_complex"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_complex.dir/rule
@@ -3262,12 +3301,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_unordered_loads.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=65 "Built target test_memory_cycles_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_memory_cycles_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_memory_cycles_32.dir/rule
@@ -3316,7 +3355,7 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_vector_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=56 "Built target test_deque_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=57 "Built target test_deque_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_deque_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3397,12 +3436,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_atomic_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_list"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=59 "Built target test_list"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_list.dir/rule
@@ -3478,12 +3517,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_set.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=71 "Built target test_pod_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_pod_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_pod_32.dir/rule
@@ -3559,7 +3598,7 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_load_construct_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=44 "Built target test_array_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=45 "Built target test_array_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3586,12 +3625,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=51 "Built target test_chrono"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_chrono"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/rule
@@ -3613,7 +3652,7 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_chrono.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=47 "Built target test_basic_string_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=48 "Built target test_basic_string_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3640,12 +3679,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_basic_string_32.dir/clean:
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/build.make vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_array"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=44 "Built target test_array"
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/CMakeFiles/test_array.dir/rule
@@ -3694,12 +3733,12 @@ vendor/spoa/vendor/cereal/unittests/CMakeFiles/portability_test64.dir/clean:
 vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/build.make vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/build.make vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target test_boost_variant"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=50 "Built target test_boost_variant"
 .PHONY : vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant.dir/rule
@@ -3748,7 +3787,7 @@ vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/coverage_boost_variant.dir/
 vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/build.make vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/build.make vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=50 "Built target test_boost_variant_32"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=51 "Built target test_boost_variant_32"
 .PHONY : vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3775,12 +3814,12 @@ vendor/spoa/vendor/cereal/unittests/boost/CMakeFiles/test_boost_variant_32.dir/c
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=32 "Built target performance"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target performance"
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/rule
@@ -3802,7 +3841,7 @@ vendor/spoa/vendor/cereal/sandbox/CMakeFiles/performance.dir/clean:
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=39 "Built target sandbox_rtti"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=40 "Built target sandbox_rtti"
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3829,12 +3868,12 @@ vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_rtti.dir/clean:
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target sandbox"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=38 "Built target sandbox"
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/rule
@@ -3856,7 +3895,7 @@ vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox.dir/clean:
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=38 "Built target sandbox_json"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=39 "Built target sandbox_json"
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3883,12 +3922,12 @@ vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_json.dir/clean:
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/all: vendor/spoa/vendor/cereal/sandbox/sandbox_shared_lib/CMakeFiles/sandbox_vs_dll.dir/all
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/build.make vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=40 "Built target sandbox_vs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target sandbox_vs"
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/spoa/vendor/cereal/sandbox/CMakeFiles/sandbox_vs.dir/rule
@@ -3937,12 +3976,12 @@ vendor/spoa/vendor/cereal/sandbox/sandbox_shared_lib/CMakeFiles/sandbox_vs_dll.d
 vendor/edlib/CMakeFiles/edlib.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib.dir/build.make vendor/edlib/CMakeFiles/edlib.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib.dir/build.make vendor/edlib/CMakeFiles/edlib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=29 "Built target edlib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target edlib"
 .PHONY : vendor/edlib/CMakeFiles/edlib.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/edlib/CMakeFiles/edlib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/edlib/CMakeFiles/edlib.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/edlib/CMakeFiles/edlib.dir/rule
@@ -3964,12 +4003,12 @@ vendor/edlib/CMakeFiles/edlib.dir/clean:
 vendor/edlib/CMakeFiles/edlib-aligner.dir/all: vendor/edlib/CMakeFiles/edlib_static.dir/all
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib-aligner.dir/build.make vendor/edlib/CMakeFiles/edlib-aligner.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib-aligner.dir/build.make vendor/edlib/CMakeFiles/edlib-aligner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target edlib-aligner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=29 "Built target edlib-aligner"
 .PHONY : vendor/edlib/CMakeFiles/edlib-aligner.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/edlib/CMakeFiles/edlib-aligner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/edlib/CMakeFiles/edlib-aligner.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/edlib/CMakeFiles/edlib-aligner.dir/rule
@@ -4018,12 +4057,12 @@ vendor/edlib/CMakeFiles/helloWorld.dir/clean:
 vendor/edlib/CMakeFiles/runTests.dir/all: vendor/edlib/CMakeFiles/edlib_static.dir/all
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/runTests.dir/build.make vendor/edlib/CMakeFiles/runTests.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/runTests.dir/build.make vendor/edlib/CMakeFiles/runTests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=37 "Built target runTests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num= "Built target runTests"
 .PHONY : vendor/edlib/CMakeFiles/runTests.dir/all
 
 # Build rule for subdir invocation for target.
 vendor/edlib/CMakeFiles/runTests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/edlib/CMakeFiles/runTests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
 .PHONY : vendor/edlib/CMakeFiles/runTests.dir/rule
@@ -4064,6 +4103,33 @@ edlib_static: vendor/edlib/CMakeFiles/edlib_static.dir/rule
 vendor/edlib/CMakeFiles/edlib_static.dir/clean:
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib_static.dir/build.make vendor/edlib/CMakeFiles/edlib_static.dir/clean
 .PHONY : vendor/edlib/CMakeFiles/edlib_static.dir/clean
+
+#=============================================================================
+# Target rules for target vendor/rampler/CMakeFiles/rampler.dir
+
+# All Build rule for target.
+vendor/rampler/CMakeFiles/rampler.dir/all:
+	$(MAKE) $(MAKESILENT) -f vendor/rampler/CMakeFiles/rampler.dir/build.make vendor/rampler/CMakeFiles/rampler.dir/depend
+	$(MAKE) $(MAKESILENT) -f vendor/rampler/CMakeFiles/rampler.dir/build.make vendor/rampler/CMakeFiles/rampler.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles --progress-num=36,37 "Built target rampler"
+.PHONY : vendor/rampler/CMakeFiles/rampler.dir/all
+
+# Build rule for subdir invocation for target.
+vendor/rampler/CMakeFiles/rampler.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendor/rampler/CMakeFiles/rampler.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/CMakeFiles 0
+.PHONY : vendor/rampler/CMakeFiles/rampler.dir/rule
+
+# Convenience name for target.
+rampler: vendor/rampler/CMakeFiles/rampler.dir/rule
+
+.PHONY : rampler
+
+# clean rule for target.
+vendor/rampler/CMakeFiles/rampler.dir/clean:
+	$(MAKE) $(MAKESILENT) -f vendor/rampler/CMakeFiles/rampler.dir/build.make vendor/rampler/CMakeFiles/rampler.dir/clean
+.PHONY : vendor/rampler/CMakeFiles/rampler.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

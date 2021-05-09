@@ -355,6 +355,15 @@ bioparser_SOURCE_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon
 bioparser_build_tests:BOOL=OFF
 
 //Value Computed by CMake
+biosoup_BINARY_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/vendor/rampler/vendor/bioparser/vendor/biosoup
+
+//Value Computed by CMake
+biosoup_SOURCE_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/vendor/rampler/vendor/bioparser/vendor/biosoup
+
+//Build biosoup unit tests
+biosoup_build_tests:BOOL=OFF
+
+//Value Computed by CMake
 cereal_BINARY_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/vendor/spoa/vendor/cereal
 
 //Value Computed by CMake
@@ -376,10 +385,16 @@ racon_SOURCE_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon
 racon_build_tests:BOOL=OFF
 
 //Build racon wrapper
-racon_build_wrapper:BOOL=OFF
+racon_build_wrapper:BOOL=ON
 
 //Build racon with NVIDIA CUDA support
 racon_enable_cuda:BOOL=OFF
+
+//Value Computed by CMake
+rampler_BINARY_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/vendor/rampler
+
+//Value Computed by CMake
+rampler_SOURCE_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/vendor/rampler
 
 //Value Computed by CMake
 spoa_BINARY_DIR:STATIC=/Users/xiaoluo/Documents/CWI/project/github/HapRacon/build/vendor/spoa
@@ -565,7 +580,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=11
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=13
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-import os, sys, time, shutil, argparse, subprocess
+import os
+import sys
+import time
+import shutil
+import argparse
+import subprocess
+
 
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs, flush=True)
+    print(*args, file=sys.stderr, **kwargs)
+    # print(*args, file=sys.stderr, **kwargs, flush=True)
 
-#*******************************************************************************
+# *******************************************************************************
+
 
 class RaconWrapper:
 
@@ -14,9 +22,11 @@ class RaconWrapper:
     __rampler = '@rampler_path@'
 
     def __init__(self, sequences, overlaps, target_sequences, split, subsample,
-        include_unpolished, fragment_correction, window_length, quality_threshold,
-        error_threshold, match, mismatch, gap, threads,
-        cudaaligner_batches, cudapoa_batches, cuda_banded_alignment):
+                 include_unpolished, fragment_correction, haplotype, min_confidence,
+                 min_support, num_prune,
+                 window_length, quality_threshold,
+                 error_threshold, match, mismatch, gap, threads,
+                 cudaaligner_batches, cudapoa_batches, cuda_banded_alignment):
 
         self.sequences = os.path.abspath(sequences)
         self.subsampled_sequences = None
@@ -28,6 +38,11 @@ class RaconWrapper:
             else (None, None)
         self.include_unpolished = include_unpolished
         self.fragment_correction = fragment_correction
+        self.haplotype = haplotype
+        self.min_confidence = min_confidence
+        self.min_support = min_support
+        self.num_prune = num_prune
+
         self.window_length = window_length
         self.quality_threshold = quality_threshold
         self.error_threshold = error_threshold
@@ -45,14 +60,16 @@ class RaconWrapper:
             os.makedirs(self.work_directory)
         except OSError:
             if (not os.path.isdir(self.work_directory)):
-                eprint('[RaconWrapper::__enter__] error: unable to create work directory!')
+                eprint(
+                    '[RaconWrapper::__enter__] error: unable to create work directory!')
                 sys.exit(1)
 
     def __exit__(self, exception_type, exception_value, traceback):
         try:
             shutil.rmtree(self.work_directory)
         except OSError:
-            eprint('[RaconWrapper::__exit__] warning: unable to clean work directory!')
+            eprint(
+                '[RaconWrapper::__exit__] warning: unable to clean work directory!')
 
     def run(self):
         # run preprocess
@@ -60,7 +77,7 @@ class RaconWrapper:
         if (self.reference_length is not None and self.coverage is not None):
             try:
                 p = subprocess.Popen([RaconWrapper.__rampler, '-o', self.work_directory,
-                    'subsample', self.sequences, self.reference_length, self.coverage])
+                                      'subsample', self.sequences, self.reference_length, self.coverage])
             except OSError:
                 eprint('[RaconWrapper::run] error: unable to run rampler!')
                 sys.exit(1)
@@ -69,15 +86,16 @@ class RaconWrapper:
                 sys.exit(1)
 
             base_name = os.path.basename(self.sequences).split('.')[0]
-            extension = '.fasta' if (self.sequences.endswith('.fasta') or\
-                self.sequences.endswith('.fasta.gz') or\
-                self.sequences.endswith('.fa') or\
-                self.sequences.endswith('.fa.gz')) else\
+            extension = '.fasta' if (self.sequences.endswith('.fasta') or
+                                     self.sequences.endswith('.fasta.gz') or
+                                     self.sequences.endswith('.fa') or
+                                     self.sequences.endswith('.fa.gz')) else\
                 '.fastq'
             self.subsampled_sequences = os.path.join(self.work_directory, base_name) +\
                 '_' + self.coverage + 'x' + extension
             if (not os.path.isfile(self.subsampled_sequences)):
-                eprint('[RaconWrapper::run] error: unable to find subsampled sequences!')
+                eprint(
+                    '[RaconWrapper::run] error: unable to find subsampled sequences!')
                 sys.exit(1)
         else:
             self.subsampled_sequences = self.sequences
@@ -85,7 +103,7 @@ class RaconWrapper:
         if (self.chunk_size is not None):
             try:
                 p = subprocess.Popen([RaconWrapper.__rampler, '-o', self.work_directory,
-                    'split', self.target_sequences, self.chunk_size])
+                                      'split', self.target_sequences, self.chunk_size])
             except OSError:
                 eprint('[RaconWrapper::run] error: unable to run rampler!')
                 sys.exit(1)
@@ -94,10 +112,10 @@ class RaconWrapper:
                 sys.exit(1)
 
             base_name = os.path.basename(self.target_sequences).split('.')[0]
-            extension = '.fasta' if (self.target_sequences.endswith('.fasta') or\
-                self.target_sequences.endswith('.fasta.gz') or\
-                self.target_sequences.endswith('.fa') or\
-                self.target_sequences.endswith('.fa.gz')) else\
+            extension = '.fasta' if (self.target_sequences.endswith('.fasta') or
+                                     self.target_sequences.endswith('.fasta.gz') or
+                                     self.target_sequences.endswith('.fa') or
+                                     self.target_sequences.endswith('.fa.gz')) else\
                 '.fastq'
 
             i = 0
@@ -111,25 +129,35 @@ class RaconWrapper:
             eprint('[RaconWrapper::run] total number of splits: ' + str(i))
 
             if (len(self.split_target_sequences) == 0):
-                eprint('[RaconWrapper::run] error: unable to find split target sequences!')
+                eprint(
+                    '[RaconWrapper::run] error: unable to find split target sequences!')
                 sys.exit(1)
         else:
             self.split_target_sequences.append(self.target_sequences)
 
         racon_params = [RaconWrapper.__racon]
-        if (self.include_unpolished == True): racon_params.append('-u')
-        if (self.fragment_correction == True): racon_params.append('-f')
+
+        if (self.include_unpolished == True):
+            racon_params.append('-u')
+        if (self.fragment_correction == True):
+            racon_params.append('-f')
+        if (self.haplotype == True):
+            racon_params.append('-p')
+            racon_params.extend(['-d', str(self.min_confidence),
+                                 '-s', str(self.min_support),
+                                 '-k', str(self.num_prune)])
+
         # if (self.cuda_banded_alignment == True): racon_params.append('-b')
         racon_params.extend(['-w', str(self.window_length),
-            '-q', str(self.quality_threshold),
-            '-e', str(self.error_threshold),
-            '-m', str(self.match),
-            '-x', str(self.mismatch),
-            '-g', str(self.gap),
-            '-t', str(self.threads),
-            # '--cudaaligner-batches', str(self.cudaaligner_batches),
-            # '-c', str(self.cudapoa_batches),
-            self.subsampled_sequences, self.overlaps, ""])
+                             '-q', str(self.quality_threshold),
+                             '-e', str(self.error_threshold),
+                             '-m', str(self.match),
+                             '-x', str(self.mismatch),
+                             '-g', str(self.gap),
+                             '-t', str(self.threads),
+                             # '--cudaaligner-batches', str(self.cudaaligner_batches),
+                             # '-c', str(self.cudapoa_batches),
+                             self.subsampled_sequences, self.overlaps, ""])
 
         for target_sequences_part in self.split_target_sequences:
             eprint('[RaconWrapper::run] processing data with racon')
@@ -146,7 +174,8 @@ class RaconWrapper:
         self.subsampled_sequences = None
         self.split_target_sequences = []
 
-#*******************************************************************************
+# *******************************************************************************
+
 
 if __name__ == '__main__':
 
@@ -157,7 +186,7 @@ if __name__ == '__main__':
         sequences can be split into smaller chunks and run sequentially to
         decrease memory consumption. Both features can be run at the same time
         as well! The usage equals the one of racon.''',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('sequences', help='''input file in FASTA/FASTQ format
         (can be compressed with gzip) containing sequences used for correction''')
     parser.add_argument('overlaps', help='''input file in MHAP/PAF/SAM format
@@ -171,14 +200,23 @@ if __name__ == '__main__':
     parser.add_argument('--subsample', nargs=2, help='''subsample sequences to
         desired coverage (2nd argument) given the reference length (1st argument)''')
     parser.add_argument('-u', '--include-unpolished', action='store_true',
-        help='''output unpolished target sequences''')
+                        help='''output unpolished target sequences''')
     parser.add_argument('-f', '--fragment-correction', action='store_true',
-        help='''perform fragment correction instead of contig polishing
+                        help='''perform fragment correction instead of contig polishing
         (overlaps file should contain dual/self overlaps!)''')
+
+    parser.add_argument('-p', '--haplotype', action='store_true',
+                        help='''perform haplotype-aware fragment correction or contig polishing''')
+    parser.add_argument('-d', '--min-confidence', default=0.2,
+                        help='''minimum confidence for keeping edges in the graph''')
+    parser.add_argument('-s', '--min-support', default=0.2,
+                        help='''minimum support for keeping edges in the graph''')
+    parser.add_argument('-k', '--num-prune', default=3,
+                        help='''number of iterations for pruning the graph''')
     parser.add_argument('-w', '--window-length', default=500, help='''size of
         window on which POA is performed''')
     parser.add_argument('-q', '--quality-threshold', default=10.0,
-        help='''threshold for average base quality of windows used in POA''')
+                        help='''threshold for average base quality of windows used in POA''')
     parser.add_argument('-e', '--error-threshold', default=0.3, help='''maximum
         allowed error rate used for filtering overlaps''')
     parser.add_argument('-m', '--match', default=5, help='''score for matching
@@ -187,18 +225,23 @@ if __name__ == '__main__':
         mismatching bases''')
     parser.add_argument('-g', '--gap', default=-8, help='''gap penalty (must be
         negative)''')
-    parser.add_argument('-t', '--threads', default=1, help='''number of threads''')
-    parser.add_argument('--cudaaligner-batches', default=0, help='''number of batches for CUDA accelerated alignment''')
-    parser.add_argument('-c', '--cudapoa-batches', default=0, help='''number of batches for CUDA accelerated polishing''')
-    parser.add_argument('-b', '--cuda-banded-alignment', action='store_true', help='''use banding approximation for polishing on GPU. Only applicable when -c is used.''')
+    parser.add_argument('-t', '--threads', default=1,
+                        help='''number of threads''')
+    parser.add_argument('--cudaaligner-batches', default=0,
+                        help='''number of batches for CUDA accelerated alignment''')
+    parser.add_argument('-c', '--cudapoa-batches', default=0,
+                        help='''number of batches for CUDA accelerated polishing''')
+    parser.add_argument('-b', '--cuda-banded-alignment', action='store_true',
+                        help='''use banding approximation for polishing on GPU. Only applicable when -c is used.''')
 
     args = parser.parse_args()
 
     racon = RaconWrapper(args.sequences, args.overlaps, args.target_sequences,
-        args.split, args.subsample, args.include_unpolished,
-        args.fragment_correction, args.window_length, args.quality_threshold,
-        args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-        args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment)
-
+                         args.split, args.subsample, args.include_unpolished,
+                         args.fragment_correction, args.haplotype, args.min_confidence,
+                         args.min_support, args.num_prune,
+                         args.window_length, args.quality_threshold,
+                         args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
+                         args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment)
     with racon:
         racon.run()

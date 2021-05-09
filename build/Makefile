@@ -1901,6 +1901,19 @@ edlib_static/fast:
 	$(MAKE) $(MAKESILENT) -f vendor/edlib/CMakeFiles/edlib_static.dir/build.make vendor/edlib/CMakeFiles/edlib_static.dir/build
 .PHONY : edlib_static/fast
 
+#=============================================================================
+# Target rules for targets named rampler
+
+# Build rule for target.
+rampler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rampler
+.PHONY : rampler
+
+# fast build rule for target.
+rampler/fast:
+	$(MAKE) $(MAKESILENT) -f vendor/rampler/CMakeFiles/rampler.dir/build.make vendor/rampler/CMakeFiles/rampler.dir/build
+.PHONY : rampler/fast
+
 src/logger.o: src/logger.cpp.o
 
 .PHONY : src/logger.o
@@ -2125,6 +2138,7 @@ help:
 	@echo "... portability_test32"
 	@echo "... portability_test64"
 	@echo "... racon"
+	@echo "... rampler"
 	@echo "... runTests"
 	@echo "... sandbox"
 	@echo "... sandbox_json"
