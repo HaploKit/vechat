@@ -87,5 +87,6 @@
         "hash_map": "cpp",
         "cinttypes": "cpp",
         "hashtable": "cpp"
-    }
+    },
+    "python.pythonPath": "/Users/xiaoluo/Software/miniconda3/bin/python"
 }
