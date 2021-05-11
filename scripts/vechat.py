@@ -117,8 +117,9 @@ def extract_sub_sequences(sequences,overlap,chunk_target_sequence):
                 else:
                     if if_extract:
                         sub_query_records.append(line)
-                i+=1             
+                i+=1   
 
+    sub_query_sequences='query_sequences.tmp.{}'.format(mode)
     with open(sub_query_sequences,'w') as fw:
         fw.write(''.join(sub_query_records))
     return sub_query_sequences
