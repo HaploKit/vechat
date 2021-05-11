@@ -11,7 +11,7 @@ import gzip
 
 def run_error_correction(
         sequences, chunk_target_sequence,
-        include_unpolished, platform,
+        include_unpolished, platform,split,
         fragment_correction, linear, min_confidence,
         min_support, corrected_file,
         window_length, quality_threshold,
@@ -20,31 +20,108 @@ def run_error_correction(
 
     racon_path = os.path.dirname(
         os.path.abspath(__file__))+"/../build/bin/racon"
+    overlap='overlap.paf'
     try:
         # compute overlap and filter
         os.system("minimap2 -x ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500'|\
-            fpa drop --same-name --internalmatch  - >overlap.paf"
-                  .format(platform, chunk_target_sequence, sequences, threads))
+            fpa drop --same-name --internalmatch  - >{}"
+                  .format(platform, chunk_target_sequence, sequences, threads,overlap))
     except:
         raise Exception("Unable to compute overlaps!")
+    
+    #extract only query sequences which have overlaps with target sequences to reduce memory
+    if split:
+        sub_query_sequences = extract_sub_sequences(sequences,overlap,chunk_target_sequence)
+    else:
+        sub_query_sequences = sequences
 
     try:
         if not linear:
             # perform haplotype aware error correction
             print("perform variation graph based (haplotype-aware) error correction")
             os.system("{} -f -p -d {} -s {} -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, min_confidence, min_support, threads, sequences,
+                      .format(racon_path, min_confidence, min_support, threads, sub_query_sequences,
                               chunk_target_sequence, corrected_file))
         else:
             # perform normal error correction, which is the same with orginal 'racon'
             print("perform linear sequence based error correction")
             os.system("{} -f  -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, threads, sequences,
+                      .format(racon_path, threads, sub_query_sequences,
                               chunk_target_sequence, corrected_file))
     except:
         raise Exception("Unable to run error correction!")
     return corrected_file
 
+def extract_sub_sequences(sequences,overlap,chunk_target_sequence):
+    mode=fq_or_fa(chunk_target_sequence)
+    target_reads={}
+    query_reads={}
+    if mode == 'fq':
+        i=0
+        with open(chunk_target_sequence) as fr:
+            for line in fr:
+                i+=1
+                if(i%4==1):
+                    target_reads[line[1:].rstrip().split()[0])]=1
+                else:
+                    continue
+    else:
+        i=0
+        with open(chunk_target_sequence) as fr:
+            for line in fr:
+                i+=1
+                if(i%2==1):
+                    target_reads[line[1:].rstrip().split()[0]]=1
+                else:
+                    continue
+    with open(overlap) as fr:
+        for line in fr:
+            a=line.split()
+            if a[0] in target_reads or a[5] in target_reads:
+                query_reads[a[0]]=1
+                query_reads[a[5]]=1
+
+    sub_query_records=[]
+    if_extract=False
+    if mode == 'fq':
+        i=0
+        with open(sequences) as fr:
+            for line in fr:
+                if(i%4==0):
+                    if line[1:].rstrip().split()[0] in query_reads:
+                        if_extract=True 
+                        sub_query_records.append(line)
+                    else:
+                        if_extract=False
+                elif(i%4==1):
+                    if if_extract:
+                        sub_query_records.append(line)
+                elif(i%4==2):
+                    if if_extract:
+                        sub_query_records.append(line)
+                else:
+                    if if_extract:
+                        sub_query_records.append(line)
+                i+=1 
+
+    if mode == 'fa':
+        i=0
+        with open(sequences) as fr:
+            for line in fr:
+                if(i%2==0):
+                    if line[1:].rstrip().split()[0] in query_reads:
+                        if_extract=True 
+                        sub_query_records.append(line)
+                    else:
+                        if_extract=False
+                else:
+                    if if_extract:
+                        sub_query_records.append(line)
+                i+=1             
+
+    with open(sub_query_sequences,'w') as fw:
+        fw.write(''.join(sub_query_records))
+    return sub_query_sequences
 
 def fq_or_fa(file):
     if file.endswith('.gz'):
@@ -172,7 +249,7 @@ if __name__ == '__main__':
                         j)
                     run_error_correction(
                         query_sequences_file, chunk_target_sequence,
-                        args.include_unpolished, args.platform,
+                        args.include_unpolished, args.platform,args.split,
                         args.fragment_correction, args.linear, args.min_confidence,
                         args.min_support, corrected_chunk_file,
                         args.window_length, args.quality_threshold,
@@ -214,7 +291,7 @@ if __name__ == '__main__':
                 corrected_file = "reads.corrected.tmp{}.fa".format(i)
                 run_error_correction(
                     query_sequences_file, target_sequences_file,
-                    args.include_unpolished, args.platform,
+                    args.include_unpolished, args.platform,args.split,
                     args.fragment_correction, args.linear, args.min_confidence,
                     args.min_support, corrected_file,
                     args.window_length, args.quality_threshold,
