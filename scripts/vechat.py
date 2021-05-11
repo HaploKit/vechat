@@ -62,7 +62,7 @@ def extract_sub_sequences(sequences,overlap,chunk_target_sequence):
             for line in fr:
                 i+=1
                 if(i%4==1):
-                    target_reads[line[1:].rstrip().split()[0])]=1
+                    target_reads[line[1:].rstrip().split()[0]]=1
                 else:
                     continue
     else:
