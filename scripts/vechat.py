@@ -48,6 +48,7 @@ def run_error_correction(
             os.system("{} -f  -t {} {} overlap.paf {} >{}"
                       .format(racon_path, threads, sub_query_sequences,
                               chunk_target_sequence, corrected_file))
+        os.system("rm -f query_sequences.tmp.*")
     except:
         raise Exception("Unable to run error correction!")
     return corrected_file

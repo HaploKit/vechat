@@ -805,7 +805,7 @@ namespace spoa
     consensus_.clear();
   }
 
-  //********************** Contributed by Xiao Luo **********************//
+  //********************** Added by Xiao Luo **********************//
   void Graph::PruneGraph(int64_t min_weight, double min_confidence, double min_support, double average_weight)
   {
     // edge: u -> v
@@ -859,7 +859,7 @@ namespace spoa
 
       confidence_uv = double(it->weight) / total_weight;
       support = double(it->weight) / average_weight;
-      // std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
+      std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
 
       //compute confidence_vu
       total_weight = 0;
@@ -880,7 +880,7 @@ namespace spoa
       // }
 
       confidence_vu = double(it->weight) / total_weight;
-      // std::cerr<<confidence_vu<<"\t";
+      std::cerr<<confidence_vu<<"\n";
 
       //determine the type of edge
       // if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
