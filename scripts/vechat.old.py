@@ -16,22 +16,15 @@ def run_error_correction(
         min_support, corrected_file,
         window_length, quality_threshold,
         error_threshold, match, mismatch, gap, threads,
-        cudaaligner_batches, cudapoa_batches, cuda_banded_alignment, iteration):
-    if iteration==2: 
-        linear=True #compute consensus at the second iteration
+        cudaaligner_batches, cudapoa_batches, cuda_banded_alignment):
+
     racon_path = os.path.dirname(
         os.path.abspath(__file__))+"/../build/bin/racon"
     overlap='overlap.paf'
     try:
         # compute overlap and filter
-        if iteration==1:
-            os.system("minimap2 -x ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500'|\
-                fpa drop --same-name --internalmatch  - >{}"
-                  .format(platform, chunk_target_sequence, sequences, threads,overlap))
-        else:
-            #perform base-level alignment
-            os.system("minimap2 -cx ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=1000 && $10/$11>=0.99'|\
-                |cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
+        os.system("minimap2 -x ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500'|\
+            fpa drop --same-name --internalmatch  - >{}"
                   .format(platform, chunk_target_sequence, sequences, threads,overlap))
     except:
         raise Exception("Unable to compute overlaps!")
@@ -189,8 +182,8 @@ if __name__ == '__main__':
                         help='''minimum support for keeping edges in the graph''')
     # parser.add_argument('-k', '--num-prune', default=3,
     #                     help='''number of iterations for pruning the graph''')
-    # parser.add_argument('--iter', default=1,type=int,
-                        # help='''number of iterations for error correction''')
+    parser.add_argument('--iter', default=1,type=int,
+                        help='''number of iterations for error correction''')
     parser.add_argument('-w', '--window-length', default=500, help='''size of
         window on which POA is performed''')
     parser.add_argument('-q', '--quality-threshold', default=10.0,
@@ -214,10 +207,6 @@ if __name__ == '__main__':
                         help='''use banding approximation for polishing on GPU. Only applicable when -c is used.''')
 
     args = parser.parse_args()
-    if args.linear:
-        iteration = 1
-    else:
-        iteration = 2 
 
     if(args.split):
         try:
@@ -226,7 +215,7 @@ if __name__ == '__main__':
             query_sequences_file = ''
             target_sequences_file = ''
             corrected_file = ''
-            for i in range(1, iteration+1):
+            for i in range(1, args.iter+1):
                 print("Performing the {} iteration for error correction...".format(i))
 
                 if i == 1:
@@ -267,7 +256,7 @@ if __name__ == '__main__':
                         args.min_support, corrected_chunk_file,
                         args.window_length, args.quality_threshold,
                         args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-                        args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, i)
+                        args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment)
                     corrected_chunk_files.append(corrected_chunk_file)
 
                 # os.system("echo -n >{}".format(corrected_file))
@@ -289,7 +278,7 @@ if __name__ == '__main__':
             query_sequences_file = ''
             target_sequences_file = ''
             corrected_file = ''
-            for i in range(1, iteration+1):
+            for i in range(1, args.iter+1):
                 print("Performing the {} iteration for error correction...".format(i))
                 if i == 1:
                     query_sequences_file = args.sequences
@@ -309,7 +298,7 @@ if __name__ == '__main__':
                     args.min_support, corrected_file,
                     args.window_length, args.quality_threshold,
                     args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, i)
+                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment)
             os.system("mv {} {}".format(corrected_file, args.outfile))
             os.system("rm -f reads.corrected.tmp*.fa")
         except OSError:
