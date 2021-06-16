@@ -50,6 +50,10 @@ def run_error_correction(
         else:
             # perform normal error correction, which is the same with orginal 'racon'
             print("perform linear sequence based error correction")
+            print("{} -f  -t {} {} overlap.paf {} >{}"
+                      .format(racon_path, threads, sub_query_sequences,
+                              chunk_target_sequence, corrected_file))
+
             os.system("{} -f  -t {} {} overlap.paf {} >{}"
                       .format(racon_path, threads, sub_query_sequences,
                               chunk_target_sequence, corrected_file))
