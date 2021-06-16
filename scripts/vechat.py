@@ -31,7 +31,7 @@ def run_error_correction(
         else:
             #perform base-level alignment
             os.system("minimap2 -cx ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=1000 && $10/$11>=0.99'|\
-                |cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
+                cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
                   .format(platform, chunk_target_sequence, sequences, threads,overlap))
     except:
         raise Exception("Unable to compute overlaps!")

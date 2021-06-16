@@ -29,7 +29,7 @@ def run_error_correction(
     try:
         # compute overlap and filter
         os.system("minimap2 -cx ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=1000 && $10/$11>=0.99'|\
-                |cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
+                cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
                   .format(platform, chunk_target_sequence, sequences, threads,overlap))
     except:
         raise Exception("Unable to compute overlaps!")
@@ -50,10 +50,6 @@ def run_error_correction(
         else:
             # perform normal error correction, which is the same with orginal 'racon'
             print("perform linear sequence based error correction")
-            print("{} -f  -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, threads, sub_query_sequences,
-                              chunk_target_sequence, corrected_file))
-
             os.system("{} -f  -t {} {} overlap.paf {} >{}"
                       .format(racon_path, threads, sub_query_sequences,
                               chunk_target_sequence, corrected_file))
