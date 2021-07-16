@@ -48,7 +48,7 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo -n "$binpath/minimap2 -x ava-$platform --dual=yes $outdir/reads.round1.fa $target_read -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $outdir/reads.round1.fa $target_read -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
     echo -n "$hapracon -f  -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp;"
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     echo "rm -f $overlap $target_read.corrected.tmp;"
