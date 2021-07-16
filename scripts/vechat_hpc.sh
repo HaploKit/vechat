@@ -4,7 +4,8 @@ platform=pb
 threads=48
 binpath='/prj/whatshap-denovo/software/miniconda3/bin' #env path
 outdir=$PWD/out
-n_split=100 
+# n_split=100 
+n_lines=4000
 min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
@@ -13,8 +14,8 @@ SCRIPTDIR=`dirname $0`
 hapracon=$SCRIPTDIR/../build/bin/racon
 corrected_read=$outdir/reads.corrected.fa
 
-num_lines=`cat $raw_read|wc -l`
-n_lines=`expr $num_lines / $n_split`
+# num_lines=`cat $raw_read|wc -l`
+# n_lines=`expr $num_lines / $n_split`
 
 rm -rf $outdir 
 mkdir  $outdir 
