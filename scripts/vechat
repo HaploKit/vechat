@@ -154,7 +154,7 @@ def fq_or_fa(file):
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='''Variation Graph based Long Read Error Correction''',
+    parser = argparse.ArgumentParser(description='''Haplotype-aware Error Correction for Noisy Long Reads Using Variation Graphs''',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('sequences', help='''input file in FASTA/FASTQ format
         (can be compressed with gzip) containing sequences used for correction''')
