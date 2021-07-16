@@ -1,2 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc lib/libspoa.a  CMakeFiles/spoa.dir/src/alignment_engine.cpp.o CMakeFiles/spoa.dir/src/graph.cpp.o CMakeFiles/spoa.dir/src/sisd_alignment_engine.cpp.o CMakeFiles/spoa.dir/src/dispatcher.cpp.o
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib lib/libspoa.a

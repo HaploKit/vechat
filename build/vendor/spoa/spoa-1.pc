@@ -1,9 +1,0 @@
-libdir=/usr/local/lib
-includedir=/usr/local/include
-
-Name: Spoa
-Description: Spoa (SIMD POA) is a C++ implementation of the partial order alignment (POA) algorithm
-Version: 4.0.7
-
-Libs: -L${libdir} -lspoa
-Cflags: -I${includedir}
