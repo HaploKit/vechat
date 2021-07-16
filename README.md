@@ -1,2 +1,2 @@
-# HapRacon
-Haplotype-aware long-read error correction
+# vechat
+Haplotype-aware error correction for noisy long reads using variation graphs
