@@ -19,20 +19,22 @@ n_lines=`expr $num_lines / $n_split`
 rm -rf $outdir 
 mkdir  $outdir 
 
-#split reads
-split -l $n_lines -d --additional-suffix .tmp $raw_read $outdir/reads_chunk
+#split reads, TODO:fa/fq because minimap2 only accept .fa/.fq
+split -l $n_lines -d --additional-suffix .tmp.fq $raw_read $outdir/reads_chunk 
 
 #run the first round 
-for target_read in $outdir/reads_chunk*.tmp
+for target_read in $outdir/reads_chunk*.tmp.fq
 do
     overlap=$target_read.paf
-    echo -n $binpath/minimap2 -x ava-$platform --dual=yes $raw_read $target_read -t $threads |awk '$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; 
-    echo -n hapracon -f -p -d $min_confidence -s $min_support -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp.fa;
-    echo $SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; rm -f $overlap $target_read $target_read.corrected.tmp.fa;
+    echo -n "$binpath/minimap2 -x ava-$platform --dual=yes $raw_read $target_read -t $threads |awk '\$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo -n "hapracon -f -p -d $min_confidence -s $min_support -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp.fa;"
+    echo "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
 done >run_round1.sh 
 
 #submit to HPC 
 
+split -l 1 -d  run_round1.sh sub-r1
+for i in `ls sub-r1*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
 
 #run the second round 
 for i in $outdir/reads_chunk*corrected.fa
