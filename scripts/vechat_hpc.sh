@@ -29,13 +29,15 @@ do
     overlap=$target_read.paf
     echo -n "$binpath/minimap2 -x ava-$platform --dual=yes $raw_read $target_read -t $threads |awk '\$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
     echo -n "$hapracon -f -p -d $min_confidence -s $min_support -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp.fa;"
-    echo "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
+    echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; "
+    # echo "rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
+    echo "rm -f $overlap $target_read.corrected.tmp.fa;"
 done >run_round1.sh 
 
 #submit to HPC 
 
-split -l 1 -d  run_round1.sh sub-r1
-for i in `ls sub-r1*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
+split -l 1 -d  run_round1.sh sub-1r
+for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
 
 #run the second round 
 for i in $outdir/reads_chunk*corrected.fa
@@ -46,12 +48,17 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo -n $binpath/minimap2 -x ava-$platform --dual=yes $outdir/reads.round1.fa $target_read -t $threads |awk '$11>=1000 && $10/$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; 
-    echo -n hapracon -f  -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp;
-    echo $SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; rm -f $overlap $target_read $target_read.corrected.tmp;
-done 
+    echo -n "$binpath/minimap2 -x ava-$platform --dual=yes $outdir/reads.round1.fa $target_read -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo -n "$hapracon -f  -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp;"
+    echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
+    echo "rm -f $overlap $target_read $target_read.corrected.tmp;"
+done >run_round2.sh
 
 #submit to HPC 
+
+split -l 1 -d  run_round2.sh sub-2r
+for i in `ls sub-2r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
+
 
 #merge
 for i in $outdir/reads_chunk*corrected2.fa
