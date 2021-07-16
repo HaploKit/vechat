@@ -1,11 +1,13 @@
+#!/bin/bash
 
 raw_read=$PWD/reads.fq
 platform=pb
-threads=48
+threads=64
 binpath='/prj/whatshap-denovo/software/miniconda3/bin' #env path
 outdir=$PWD/out
-# n_split=100 
-n_lines=4000
+# n_lines=4000
+n_lines=200000 #800M fastq
+
 min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
@@ -39,6 +41,8 @@ done >run_round1.sh
 split -l 1 -d  run_round1.sh sub-1r
 for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
 
+#check if finished successfully manually !!!
+
 #run the second round 
 for i in $outdir/reads_chunk*corrected.fa
 do
@@ -59,6 +63,7 @@ done >run_round2.sh
 split -l 1 -d  run_round2.sh sub-2r
 for i in `ls sub-2r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
 
+#check if finished successfully manually !!!
 
 #merge
 for i in $outdir/reads_chunk*corrected2.fa
@@ -66,5 +71,5 @@ do
     cat $i 
 done >$corrected_read 
 
-rm -f $outdir/reads_chunk*corrected2.fa
+rm -f $outdir/reads_chunk*
 
