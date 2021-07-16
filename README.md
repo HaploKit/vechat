@@ -2,7 +2,7 @@
 ![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png)
 
 Haplotype-aware error correction for noisy long reads using variation graphs
-<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=60% />
+<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=40% />
 
 ## Description
 
