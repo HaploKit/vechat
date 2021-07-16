@@ -1,8 +1,9 @@
 
-![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png)
+<!-- ![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png) -->
+
+<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=30% />
 
 Haplotype-aware error correction for noisy long reads using variation graphs
-<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=20% />
 
 ## Description
 
