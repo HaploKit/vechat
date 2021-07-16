@@ -3,7 +3,7 @@
 
 <img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=30% />
 
-Haplotype-aware error correction for noisy long reads using variation graphs
+Haplotype-aware Error Correction for Noisy Long Reads Using Variation Graphs
 
 ## Description
 
