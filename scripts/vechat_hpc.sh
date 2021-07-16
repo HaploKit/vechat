@@ -28,7 +28,7 @@ for target_read in $outdir/reads_chunk*.tmp.fq
 do
     overlap=$target_read.paf
     echo -n "$binpath/minimap2 -x ava-$platform --dual=yes $raw_read $target_read -t $threads |awk '\$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
-    echo -n "hapracon -f -p -d $min_confidence -s $min_support -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp.fa;"
+    echo -n "$hapracon -f -p -d $min_confidence -s $min_support -t $threads  $raw_read  $overlap  $target_read >$target_read.corrected.tmp.fa;"
     echo "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
 done >run_round1.sh 
 
