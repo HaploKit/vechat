@@ -1,9 +1,9 @@
 
-raw_read=''
+raw_read=$PWD/reads.fq
 platform=pb
 threads=48
 binpath='/prj/whatshap-denovo/software/miniconda3/bin' #env path
-outdir='./out'
+outdir=$PWD/out
 n_split=100 
 min_confidence=0.2
 min_support=0.2
