@@ -1,17 +1,17 @@
 # vechat
+Haplotype-aware error correction for noisy long reads using variation graphs
+
 ## Description
 
 Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present vechat, a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Noisy variation graphs are firstly constructed from raw long reads, preserving true [v]()ariations and sequencing [e]()rrors. These graphs could be then pruned based on the correlations([chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction.
 
 ## Installation and dependencies
-Please note that phasebook is built for linux-based systems only.
-phasebook relies on the following dependencies:
+vechat relies on the following dependencies:
 - [racon](https://github.com/lbcb-sci/racon)
 - [minimap2](https://github.com/lh3/minimap2)
-- [samtools](http://www.htslib.org/)
 - [fpa](https://github.com/natir/fpa)
 
-To install phasebook, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
+To install vechat, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
 ```
 conda create -n phasebook python=3.7
 conda activate phasebook
