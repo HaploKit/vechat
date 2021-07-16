@@ -1,0 +1,4 @@
+
+#!/bin/bash
+
+perl -e '$/=">";open A,"$ARGV[0]" or die;<A>;while(<A>){chomp;my@a=split/\n/;my$seq=join("",@a[1..$#a]);next if length($seq)<$ARGV[1];print ">$a[0]\n$seq\n";}' $1 $2
