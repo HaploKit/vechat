@@ -1,5 +1,5 @@
 # vechat
-![avatar](https://github.com/xiaoluo91/vechat/example/logo.png)
+![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/example/logo.png)
 Haplotype-aware error correction for noisy long reads using variation graphs
 
 ## Description
