@@ -32,6 +32,11 @@ cd vechat
 mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release ..;make
 ```
 
+Add the following code to your `$HOME/.bashrc`:
+```
+export PATH=/path/to/vechat/scripts/:$PATH
+```
+
 ## Running and options
 
 The input read file is only required and the format should be FASTA/FASTQ (can be compressed with gzip). Other parameters are optional.
