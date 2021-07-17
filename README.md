@@ -14,30 +14,29 @@ vechat relies on the following dependencies:
 - [racon](https://github.com/lbcb-sci/racon)
 - [minimap2](https://github.com/lh3/minimap2)
 - [fpa](https://github.com/natir/fpa)
+- gcc 4.8+ or clang 3.4+
+- cmake 3.2+
+- zlib
 
 To install vechat, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
 ```
-conda create -n phasebook python=3.7
-conda activate phasebook
-conda install -c bioconda whatshap=0.18 minimap2 longshot samtools bcftools racon fpa=0.5
+conda create -n vechat
+conda activate vechat
+conda install -c bioconda minimap2 fpa=0.5
 ```
 
 Subsequently, pull down the code to the directory where you want to install, and compile the code:
 ```
-git clone https://github.com/phasebook/phasebook.git
-cd phasebook
-sh install.sh
+git clone https://github.com/xiaoluo91/vechat.git
+cd vechat
+mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release ..;make
 ```
 
 ## Running and options
 
-The input read file is only required and the format should be FASTA or FASTQ. Other parameters are optional.
-Please run `python phasebook.py -h` to get details of optional parameters setting. 
-The final polished haplotype aware contigs are included in the `contigs.fa` file under output directory.
+The input read file is only required and the format should be FASTA/FASTQ (can be compressed with gzip). Other parameters are optional.
+Please run `vechat -h` to get details of optional arguments. 
 
-Before running phasebook, please read through the following basic parameter settings, 
-which may be helpful to obtain better assemblies. Note that the option `-x` indicates 
-using preset parameters for assembly, which is recommended.
 ```
 positional arguments:
   sequences             input file in FASTA/FASTQ format (can be compressed
@@ -68,30 +67,25 @@ optional arguments:
 ```
 
 ## Examples
-One can test the program using the small PacBio HiFi reads file `example/reads.fq`.
-`-g` is used to set the running mode for small or large genomes. If set `-g large`, 
-it will utilize more efficient approaches for read overlap calculation and filtering,
- as well as sequencing error correction, but may at the cost of assembly performance.
- In general,
+One can test the program using the small sequencing read file `example/reads.fq.gz`:
 
-For small genomes or genomic regions assembly:
-- PacBio CLR reads
+- Correcting PacBio CLR reads
 ```
 cd example
 vechat reads.fq.gz reads.fq.gz -t 8 --platform pb -o reads.corrected.fa 
 ```
-- ONT reads
+- Correcting ONT reads
 ```
 vechat reads.fq.gz reads.fq.gz -t 8 --platform ont -o reads.corrected.fa 
 ```
 
-For running large datasets on a single local machine, one could add `--split` to reduce memory usage:
+- For running large datasets on a single local machine, one could add `--split` to reduce memory usage:
 ```
 vechat reads.fq.gz reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa 
 ```
 
 
-For running large datasets on HPC, one could refer to `scripts/vechat_hpc.sh` or `scripts/vechat_hpc.fast.sh` for how to split and submit jobs.
+- For running large datasets on HPC, one could refer to `scripts/vechat_hpc.sh` or `scripts/vechat_hpc.fast.sh` for how to split and submit jobs.
 
 
 ## Citation
