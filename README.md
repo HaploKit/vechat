@@ -87,7 +87,7 @@ vechat reads.fq.gz reads.fq.gz -t 8 --platform ont -o reads.corrected.fa
 
 For running large datasets on a single local machine, one could add `--split` to reduce memory usage:
 ```
-vechat reads.fq reads.fq -t 48 --platform pb --split -o reads.corrected.fa 
+vechat reads.fq.gz reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa 
 ```
 
 
