@@ -12,6 +12,7 @@ n_lines=40000 #200M fastq
 min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
+min_identity_cns=0.99 
 #######################################
 # SCRIPTDIR=`dirname $0`
 SCRIPTDIR='/prj/whatshap-denovo/github/vechat/scripts'
@@ -68,7 +69,8 @@ done >$outdir/reads.round1.fa
 for i in {1,}
 do
 overlap=$outdir/overlap.round2.paf
-echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $outdir/reads.round1.fa  $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $outdir/reads.round1.fa  $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+# echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $outdir/reads.round1.fa  $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
 echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $outdir/reads.round1.fa >$outdir/reads_chunk.round2.corrected.tmp;"
 echo -n "$SCRIPTDIR/filter_fa $outdir/reads_chunk.round2.corrected.tmp $min_corrected_len >$corrected_read; "
 echo "rm -f $overlap $outdir/reads_chunk.round2.corrected.tmp;"
