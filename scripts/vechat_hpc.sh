@@ -40,6 +40,7 @@ do
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; "
     # echo "rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
     # echo "rm -f $overlap $target_read.corrected.tmp.fa;"
+    echo ""
 done >run_round1.sh 
 exit 
 

@@ -77,17 +77,17 @@ it will utilize more efficient approaches for read overlap calculation and filte
 For small genomes or genomic regions assembly:
 - PacBio CLR reads
 ```
-    cd example
-    vechat reads.fq reads.fq -t 8 --platform pb -o reads.corrected.fa 
+cd example
+vechat reads.fq.gz reads.fq.gz -t 8 --platform pb -o reads.corrected.fa 
 ```
 - ONT reads
 ```
-    vechat reads.fq reads.fq -t 8 --platform ont -o reads.corrected.fa 
+vechat reads.fq.gz reads.fq.gz -t 8 --platform ont -o reads.corrected.fa 
 ```
 
-For running large datasets (say >20Gb FASTQ) on local machines, one could add `--split` to reduce memory usage:
+For running large datasets on a single local machine, one could add `--split` to reduce memory usage:
 ```
-    vechat reads.fq reads.fq -t 48 --platform pb --split -o reads.corrected.fa 
+vechat reads.fq reads.fq -t 48 --platform pb --split -o reads.corrected.fa 
 ```
 
 
