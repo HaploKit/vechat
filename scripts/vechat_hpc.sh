@@ -6,7 +6,8 @@ threads=64
 binpath='/prj/whatshap-denovo/software/miniconda3/bin' #env path
 outdir=$PWD/out
 # n_lines=4000
-n_lines=200000 #800M fastq
+# n_lines=200000 #1Gb fastq
+n_lines=40000 #200M fastq
 
 min_confidence=0.2
 min_support=0.2
