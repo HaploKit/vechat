@@ -18,7 +18,7 @@ vechat relies on the following dependencies:
 - cmake 3.2+
 - zlib
 
-### 1. Install from [Conda](https://docs.conda.io/en/latest/)
+### 1.Install from [Conda](https://docs.conda.io/en/latest/)
 This is easy and recommended:
 ```
 conda create -n vechat
@@ -26,7 +26,7 @@ conda activate vechat
 conda install -c bioconda vechat
 ```
 
-### 2. Install from source code
+### 2.Install from source code
 To install vechat, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
 ```
 conda create -n vechat
