@@ -50,8 +50,11 @@ exit
 
 #submit to HPC 
 
+split -l 1 -d  run_overlap1.sh sub-veovlp
+for i in `ls sub-veovlp*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=80G,vf=80G $i;done
+
 split -l 1 -d  run_round1.sh sub-1r
-for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
+for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=200G,vf=200G $i;done
 
 #check if finished successfully manually !!!
 
