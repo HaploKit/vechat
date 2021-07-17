@@ -30,7 +30,7 @@ split -l $n_lines -d --additional-suffix .tmp.fq $raw_read $outdir/reads_chunk
 for target_read in $outdir/reads_chunk*.tmp.fq
 do
     overlap=$target_read.paf
-    echo "$binpath/minimap2 -x ava-$platform --dual=yes $raw_read $target_read -t $threads |awk '\$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo "$binpath/minimap2 -x ava-$platform --dual=yes  $target_read $raw_read -t $threads |awk '\$11>=500' |$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
 done >run_overlap1.sh 
 
 for target_read in $outdir/reads_chunk*.tmp.fq
