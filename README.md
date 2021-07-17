@@ -32,7 +32,7 @@ cd vechat
 mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release ..;make
 ```
 
-Add the following code to your `$HOME/.bashrc`:
+Add the following code to your `$HOME/.bashrc`, please change the `/path/to/vechat` as your own path:
 ```
 export PATH=/path/to/vechat/scripts/:$PATH
 ```
