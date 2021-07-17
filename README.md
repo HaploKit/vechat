@@ -90,7 +90,7 @@ vechat reads.fq.gz reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa
 ```
 
 
-- For running large datasets on HPC, one could refer to `scripts/vechat_hpc.sh` or `scripts/vechat_hpc.fast.sh` for how to split and submit jobs.
+- For running large datasets on HPC to speed up, one could refer to `scripts/vechat_hpc.sh` or `scripts/vechat_hpc.fast.sh` for how to split and submit jobs.
 
 
 ## Citation
