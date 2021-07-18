@@ -40,7 +40,7 @@ do
     overlap=$target_read.paf
     # query_read=$raw_read
     query_read=$target_read.query.fq
-    echo -n "perl -e 'my%h;open A,\$ARGV[1] or die; while(<A>){my@a=split;\$h{\$a[0]}=1; \$h{\$a[5]}=1;}close A; open A,\$ARGV[0] or die; open O,\">\$ARGV[2]\" or die; my\$flag=0;while(<A>){if(\$.%4==1){chomp;s/^@//;if(exists \$h{\$_}){\$flag=1;print O \"@\".\"\$_\n\";}else{\$flag=0;} }elsif(\$flag){print O \$_;} }close A;close O;' $raw_read  $overlap  $query_read; "
+    echo -n "perl -e 'my%h;open A,\$ARGV[1] or die; while(<A>){my@a=split;\$h{\$a[0]}=1; \$h{\$a[5]}=1;}close A; open A,\$ARGV[0] or die; open O,\">\$ARGV[2]\" or die; my\$flag=0;while(<A>){if(\$.%4==1){chomp;s/^@//;if(exists \$h{\$_}){\$flag=1;print O \"@\".\"\$_\\n\";}else{\$flag=0;} }elsif(\$flag){print O \$_;} }close A;close O;' $raw_read  $overlap  $query_read; "
     echo -n "$hapracon -f -p -d $min_confidence -s $min_support -t $threads  $query_read  $overlap  $target_read >$target_read.corrected.tmp.fa;"
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp.fa $min_corrected_len >$target_read.corrected.fa; "
     # echo "rm -f $overlap $target_read $target_read.corrected.tmp.fa;"
