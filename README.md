@@ -13,7 +13,7 @@ Error self-correction is usually the first step and thus crucial in long-read se
 vechat relies on the following dependencies:
 - [racon](https://github.com/lbcb-sci/racon)
 - [minimap2](https://github.com/lh3/minimap2)
-- [fpa](https://github.com/natir/fpa)
+- [fpa](https://github.com/natir/fpa) and [yacrd](https://github.com/natir/yacrd)
 - gcc 4.8+ or clang 3.4+
 - cmake 3.2+
 - zlib
@@ -31,7 +31,7 @@ To install vechat, firstly, it is recommended to intall the dependencies through
 ```
 conda create -n vechat
 conda activate vechat
-conda install -c bioconda minimap2 fpa=0.5
+conda install -c bioconda minimap2 yacrd fpa=0.5
 ```
 
 Subsequently, pull down the code to the directory where you want to install, and compile the code:
@@ -76,6 +76,10 @@ optional arguments:
   -s MIN_SUPPORT, --min-support MIN_SUPPORT
                         minimum support for keeping edges in the graph
                         (default: 0.2)
+  --scrub               scrub chimeric reads (default: False)
+  --min-identity-cns MIN_IDENTITY_CNS
+                        minimum sequence identity between read overlaps in the
+                        consensus round (default: 0.99)
   -t THREADS, --threads THREADS
                         number of threads (default: 1)
 ```
