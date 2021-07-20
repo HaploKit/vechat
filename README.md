@@ -55,9 +55,6 @@ Please run `vechat -h` to get details of optional arguments.
 positional arguments:
   sequences             input file in FASTA/FASTQ format (can be compressed
                         with gzip) containing sequences used for correction
-  target_sequences      input file in FASTA/FASTQ format (can be compressed
-                        with gzip) containing sequences which will be
-                        corrected
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -90,16 +87,16 @@ One can test the program using the small sequencing read file `example/reads.fq.
 - Correcting PacBio CLR reads
 ```
 cd example
-vechat reads.fq.gz reads.fq.gz -t 8 --platform pb -o reads.corrected.fa 
+vechat reads.fq.gz -t 8 --platform pb -o reads.corrected.fa 
 ```
 - Correcting ONT reads
 ```
-vechat reads.fq.gz reads.fq.gz -t 8 --platform ont -o reads.corrected.fa 
+vechat reads.fq.gz -t 8 --platform ont -o reads.corrected.fa 
 ```
 
 - For running large datasets on a single local machine, one could add `--split` to reduce memory usage:
 ```
-vechat reads.fq.gz reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa 
+vechat reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa 
 ```
 
 
