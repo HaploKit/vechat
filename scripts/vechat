@@ -149,6 +149,21 @@ def fq_or_fa(file):
             "invalid input file, must be FASTA/FASTQ format.", file)
     return mode
 
+def scrub_reads(sequences, platform, threads):
+    outdir=os.getcwd()
+    suffix=fq_or_fa(sequences)
+    overlap=outdir+'/scrub.paf'
+    scrubbed_sequences=outdir+'/reads.scrubbed.'+suffix 
+    if platform=='pb':
+        os.system("minimap2 -x ava-{} -g 5000 -t {} {} {} > {}".format(platform,threads,sequences ,sequences, overlap))
+        os.system("yacrd -i {} -o {}/report.yacrd -c 3 -n 0.4 scrubb -i {} -o {}".format(overlap, outdir, sequences, scrubbed_sequences))
+    elif platform=='ont':
+        os.system("minimap2 -x ava-{} -g 500 -t {} {} {} > {}".format(platform,threads,sequences ,sequences, overlap))
+        os.system("yacrd -i {} -o {}/report.yacrd -c 4 -n 0.4 scrubb -i {} -o {}".format(overlap, outdir, sequences, scrubbed_sequences))
+    else:
+        raise Exception("Invalid platform, must be: pb or ont")
+    os.system('rm -f {}'.format(overlap))
+    return scrubbed_sequences
 
 # *******************************************************************************
 
@@ -162,9 +177,9 @@ if __name__ == '__main__':
     # parser.add_argument('overlaps', help='''input file in MHAP/PAF/SAM format
     #     (can be compressed with gzip) containing overlaps between sequences and
     #     target sequences''')
-    parser.add_argument('target_sequences', help='''input file in FASTA/FASTQ
-        format (can be compressed with gzip) containing sequences which will be
-        corrected''')
+    # parser.add_argument('target_sequences', help='''input file in FASTA/FASTQ
+    #     format (can be compressed with gzip) containing sequences which will be
+    #     corrected''')
 
     parser.add_argument('-o', '--outfile', required=False, default='reads.corrected.fa',
                         help="output file")
@@ -174,7 +189,8 @@ if __name__ == '__main__':
                         help='''split target sequences into chunks (recommend for FASTQ > 20G or FASTA > 10G)''')
     parser.add_argument('--split-size', default=1000000,type=int, help='''split target sequences into chunks of
         desired size in lines, only valid when using --split''')
-
+    parser.add_argument('--scrub', action='store_true',
+                        help='''scrub chimeric reads''')
     parser.add_argument('-u', '--include-unpolished', action='store_true',
                         help='''output unpolished target sequences''')
     parser.add_argument('-f', '--fragment-correction', action='store_false',
@@ -223,10 +239,17 @@ if __name__ == '__main__':
         iteration = 1
     else:
         iteration = 2 
+    sequences = args.sequences
+    target_sequences = args.sequences 
+    if args.scrub:
+        print("Scrubbing reads...")
+        scrubbed_sequences = scrub_reads(sequences, args.platform, args.threads)
+        sequences = scrubbed_sequences
+        target_sequences = scrubbed_sequences
 
     if(args.split):
         try:
-            suffix = fq_or_fa(args.target_sequences)
+            suffix = fq_or_fa(target_sequences)
 
             query_sequences_file = ''
             target_sequences_file = ''
@@ -235,11 +258,11 @@ if __name__ == '__main__':
                 print("Performing the {} iteration for error correction...".format(i))
 
                 if i == 1:
-                    query_sequences_file = args.sequences
-                    target_sequences_file = args.target_sequences
+                    query_sequences_file = sequences
+                    target_sequences_file = target_sequences
                     #need gsplit if on MacOS
                     os.system("split -l {} -d --additional-suffix .{} {} reads_chunk".format(
-                        args.split_size, suffix, args.target_sequences))
+                        args.split_size, suffix, target_sequences))
                     chunk_target_sequences = os.popen(
                         "ls reads_chunk*").read().strip().split()
                 elif i > 1:
@@ -297,8 +320,8 @@ if __name__ == '__main__':
             for i in range(1, iteration+1):
                 print("Performing the {} iteration for error correction...".format(i))
                 if i == 1:
-                    query_sequences_file = args.sequences
-                    target_sequences_file = args.target_sequences
+                    query_sequences_file = sequences
+                    target_sequences_file = target_sequences
                 elif i > 1:
                     query_sequences_file = "reads.corrected.tmp{}.fa".format(
                         i-1)
