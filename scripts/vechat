@@ -12,7 +12,7 @@ import gzip
 def run_error_correction(
         sequences, chunk_target_sequence,
         include_unpolished, platform,split,
-        fragment_correction, linear, min_confidence,
+        linear, min_confidence,
         min_support, corrected_file,
         window_length, quality_threshold,
         error_threshold, match, mismatch, gap, threads,
@@ -193,10 +193,6 @@ if __name__ == '__main__':
                         help='''scrub chimeric reads''')
     parser.add_argument('-u', '--include-unpolished', action='store_true',
                         help='''output unpolished target sequences''')
-    parser.add_argument('-f', '--fragment-correction', action='store_false',
-                        help='''perform fragment correction instead of contig polishing
-        (overlaps file should contain dual/self overlaps!)''')
-
     parser.add_argument('--linear', action='store_true',
                         help='''perform linear based fragment correction rather than variation graph based
                         fragment correction''')
@@ -291,7 +287,7 @@ if __name__ == '__main__':
                     run_error_correction(
                         query_sequences_file, chunk_target_sequence,
                         args.include_unpolished, args.platform,args.split,
-                        args.fragment_correction, args.linear, args.min_confidence,
+                        args.linear, args.min_confidence,
                         args.min_support, corrected_chunk_file,
                         args.window_length, args.quality_threshold,
                         args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
@@ -333,7 +329,7 @@ if __name__ == '__main__':
                 run_error_correction(
                     query_sequences_file, target_sequences_file,
                     args.include_unpolished, args.platform,args.split,
-                    args.fragment_correction, args.linear, args.min_confidence,
+                    args.linear, args.min_confidence,
                     args.min_support, corrected_file,
                     args.window_length, args.quality_threshold,
                     args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
