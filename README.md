@@ -38,7 +38,7 @@ Subsequently, pull down the code to the directory where you want to install, and
 ```
 git clone https://github.com/xiaoluo91/vechat.git
 cd vechat
-mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release ..;make
+mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release -Dspoa_optimize_for_portability=ON ..;make
 ```
 
 Add the following code to your `$HOME/.bashrc`, please change the `/path/to/vechat` as your own path:
