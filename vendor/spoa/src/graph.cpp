@@ -880,7 +880,7 @@ namespace spoa
       // }
 
       confidence_vu = double(it->weight) / total_weight;
-      std::cerr<<confidence_vu<<"\n";
+      // std::cerr<<confidence_vu<<"\n";
 
       //determine the type of edge
       // if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)
