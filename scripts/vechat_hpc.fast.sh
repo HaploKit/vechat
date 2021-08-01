@@ -57,7 +57,7 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
     # echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
     echo -n "/vol/biotools/bin/racon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by administrator
 
