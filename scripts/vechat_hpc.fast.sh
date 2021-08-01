@@ -12,7 +12,8 @@ min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
 #######################################
-SCRIPTDIR=`dirname $0`
+# SCRIPTDIR=`dirname $0`
+SCRIPTDIR='/prj/whatshap-denovo/github/vechat/scripts'
 hapracon=$SCRIPTDIR/../build/bin/racon
 corrected_read=$outdir/reads.corrected.fa
 
@@ -39,7 +40,7 @@ done >run_round1.sh
 #submit to HPC 
 
 split -l 1 -d  run_round1.sh sub-1r
-for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
+for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=60G,vf=60G $i;done
 
 #check if finished successfully manually !!!
 
@@ -54,7 +55,9 @@ for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
     echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $outdir/reads.round1.fa $target_read -t $threads |awk '\$11>=1000 && \$10/\$11>=0.99' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
-    echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
+    # echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
+    echo -n "/vol/biotools/bin/racon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by administrator
+
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     echo "rm -f $overlap $target_read.corrected.tmp;"
 done >run_round2.sh
