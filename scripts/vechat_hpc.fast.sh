@@ -64,6 +64,7 @@ do
 
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     # echo "rm -f $overlap $target_read.corrected.tmp;"
+    echo;
 done >run_round2.sh
 
 #submit to HPC 
