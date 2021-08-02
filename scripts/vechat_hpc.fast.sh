@@ -83,8 +83,8 @@ do
     # query_read=$raw_read
     query_read=$target_read.query.fq
     echo -n "perl -e 'my%h;open A,\$ARGV[1] or die; while(<A>){my@a=split;\$h{\$a[0]}=1; \$h{\$a[5]}=1;}close A; open A,\$ARGV[0] or die; open O,\">\$ARGV[2]\" or die; my\$flag=0;while(<A>){if(\$.%2==1){chomp;s/^>//;my@a=split; if(exists \$h{\$a[0]}){\$flag=1;print O \">\".\"\$a[0]\\n\";}else{\$flag=0;} }elsif(\$flag){print O \$_;} }close A;close O;' $outdir/reads.round1.fa  $overlap  $query_read; "
-    # echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
-    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
+    # echo -n "$hapracon -f -u -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
+    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -u -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
 
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     # echo "rm -f $overlap $target_read.corrected.tmp;"
