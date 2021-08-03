@@ -74,7 +74,7 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo "$binpath/minimap2 -x ava-$platform --dual=yes  $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+    echo "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
 done >run_overlap2.sh 
 
 for target_read in $outdir/reads_chunk*corrected.fa
@@ -84,7 +84,8 @@ do
     query_read=$target_read.query.fa
     echo -n "perl -e 'my%h;open A,\$ARGV[1] or die; while(<A>){my@a=split;\$h{\$a[0]}=1; \$h{\$a[5]}=1;}close A; open A,\$ARGV[0] or die; open O,\">\$ARGV[2]\" or die; my\$flag=0;while(<A>){if(\$.%2==1){chomp;s/^>//;my@a=split; if(exists \$h{\$a[0]}){\$flag=1;print O \">\".\"\$a[0]\\n\";}else{\$flag=0;} }elsif(\$flag){print O \$_;} }close A;close O;' $outdir/reads.round1.fa  $overlap  $query_read; "
     # echo -n "$hapracon -f -u -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
-    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -u -t $threads  $query_read $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
+    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -t $threads  $query_read $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
+    # echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -u -t $threads  $query_read $overlap  $target_read >$target_read.corrected.tmp;" #use -u [output unpolished reads]
 
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     # echo "rm -f $overlap $target_read.corrected.tmp;"
