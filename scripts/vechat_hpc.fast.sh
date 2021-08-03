@@ -13,7 +13,7 @@ min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
 # min_identity_cns=0.99 #default
-min_identity_cns=0.98 #high compleixty metagenome 20x
+min_identity_cns=0.99 #high compleixty metagenome 20x
 #######################################
 # SCRIPTDIR=`dirname $0`
 SCRIPTDIR='/prj/whatshap-denovo/github/vechat/scripts'
