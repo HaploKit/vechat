@@ -64,7 +64,7 @@ for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -
 ######## run the second round #######
 #####################################
 
-#Note that in the second round, it will lost many overlaps if splitting reads when running minimap2.
+#Note that in the second round, it may lost overlaps if splitting reads when running minimap2.
 for i in $outdir/reads_chunk*corrected.fa
 do
     cat $i 
@@ -74,8 +74,12 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
-done >run_overlap2.sh 
+    echo -n '' >$overlap 
+    for query_read in $outdir/reads_chunk*corrected.fa
+    do
+        echo "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $query_read -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - >> $overlap; "
+    done
+done >ovlp2.$target_read.sh  
 
 for target_read in $outdir/reads_chunk*corrected.fa
 do

@@ -13,7 +13,7 @@ min_confidence=0.2
 min_support=0.2
 min_corrected_len=1000 
 # min_identity_cns=0.99 #default
-min_identity_cns=0.98 #high compleixty metagenome 20x
+min_identity_cns=0.99 #high compleixty metagenome 20x
 #######################################
 # SCRIPTDIR=`dirname $0`
 SCRIPTDIR='/prj/whatshap-denovo/github/vechat/scripts'
@@ -64,28 +64,42 @@ for i in `ls sub-1r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -
 ######## run the second round #######
 #####################################
 
-#Note that in the second round, it will lost many overlaps if splitting reads when running minimap2.
+#Note that in the second round, it may lost overlaps if splitting reads when running minimap2.
 for i in $outdir/reads_chunk*corrected.fa
 do
     cat $i 
 done >$outdir/reads.round1.fa  
 
+
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo -n "$binpath/minimap2 -cx ava-$platform --dual=yes $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
-    # echo -n "$hapracon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
-    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f  -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
+    echo "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $outdir/reads.round1.fa -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - > $overlap; "
+done >run_overlap2.sh 
+
+for target_read in $outdir/reads_chunk*corrected.fa
+do
+    overlap=$target_read.paf
+    # query_read=$raw_read
+    query_read=$target_read.query.fa
+    echo -n "perl -e 'my%h;open A,\$ARGV[1] or die; while(<A>){my@a=split;\$h{\$a[0]}=1; \$h{\$a[5]}=1;}close A; open A,\$ARGV[0] or die; open O,\">\$ARGV[2]\" or die; my\$flag=0;while(<A>){if(\$.%2==1){chomp;s/^>//;my@a=split; if(exists \$h{\$a[0]}){\$flag=1;print O \">\".\"\$a[0]\\n\";}else{\$flag=0;} }elsif(\$flag){print O \$_;} }close A;close O;' $outdir/reads.round1.fa  $overlap  $query_read; "
+    # echo -n "$hapracon -f -u -t $threads  $outdir/reads.round1.fa   $overlap  $target_read >$target_read.corrected.tmp;"
+    echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -t $threads  $query_read $overlap  $target_read >$target_read.corrected.tmp;" #use racon installed by conda to run on HPC
+    # echo -n "/prj/whatshap-denovo/software/miniconda3/bin/racon -f -u -t $threads  $query_read $overlap  $target_read >$target_read.corrected.tmp;" #use -u [output unpolished reads]
 
     echo -n "$SCRIPTDIR/filter_fa $target_read.corrected.tmp $min_corrected_len >$target_read.corrected2.fa; "
     # echo "rm -f $overlap $target_read.corrected.tmp;"
     echo;
-done >run_round2.sh
+done >run_round2.sh 
 
 #submit to HPC 
 
+split -l 1 -d  run_overlap2.sh sub-ovlp
+for i in `ls sub-ovlp*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=100G,vf=100G $i;done
+
 split -l 1 -d  run_round2.sh sub-2r
-for i in `ls sub-2r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=40G,vf=40G $i;done
+for i in `ls sub-2r*`;do qsub -cwd -P fair_share -S /bin/bash -l arch=lx-amd64 -l h_rt=100000:00:00,h_vmem=200G,vf=200G $i;done
+
 
 #check if finished successfully manually !!!
 
