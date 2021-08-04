@@ -75,11 +75,12 @@ for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
     echo -n '' >$overlap 
+    target_prefix=`echo $target_read|sed 's/.*\///'|sed 's/\.corrected\.fa//'`
     for query_read in $outdir/reads_chunk*corrected.fa
     do
         echo "$binpath/minimap2 -cx ava-$platform --dual=yes  $target_read $query_read -t $threads |awk '\$11>=1000 && \$10/\$11>=$min_identity_cns' |cut -f 1-12|$binpath/fpa drop --same-name --internalmatch  - >> $overlap; "
-    done
-done >ovlp2.$target_read.sh  
+    done >ovlp2.$target_prefix.sh
+done   
 
 for target_read in $outdir/reads_chunk*corrected.fa
 do
