@@ -74,7 +74,6 @@ done >$outdir/reads.round1.fa
 for target_read in $outdir/reads_chunk*corrected.fa
 do
     overlap=$target_read.paf
-    echo -n '' >$overlap 
     target_prefix=`echo $target_read|sed 's/.*\///'|sed 's/\.corrected\.fa//'`
     for query_read in $outdir/reads_chunk*corrected.fa
     do
