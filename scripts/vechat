@@ -17,7 +17,7 @@ def run_error_correction(
         window_length, quality_threshold,
         error_threshold, match, mismatch, gap, threads,
         cudaaligner_batches, cudapoa_batches, cuda_banded_alignment, 
-        iteration, min_identity_cns, min_ovlplen_cns):
+        iteration, min_identity_cns, min_ovlplen_cns, base, min_identity):
     if iteration==2: 
         linear=True #compute consensus at the second iteration
     racon_path = os.path.dirname(
@@ -26,9 +26,15 @@ def run_error_correction(
     try:
         # compute overlap and filter
         if iteration==1:
-            os.system("minimap2 -x ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500'|\
-                fpa drop --same-name --internalmatch  - >{}"
-                  .format(platform, chunk_target_sequence, sequences, threads,overlap))
+            if not base:
+                os.system("minimap2 -x ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500'|\
+                    fpa drop --same-name --internalmatch  - >{}"
+                    .format(platform, chunk_target_sequence, sequences, threads,overlap))
+            else: 
+                #perform base level alignment, may obtain better results but much slower
+                os.system("minimap2 -cx ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>=500 && $10/$11>={}'|\
+                    cut -f 1-12|fpa drop --same-name --internalmatch  - >{}"
+                    .format(platform, chunk_target_sequence, sequences, threads, min_identity, overlap))
         else:
             #perform base-level alignment
             os.system("minimap2 -cx ava-{} --dual=yes {} {} -t {} 2>/dev/null|awk '$11>={} && $10/$11>={}'|\
@@ -198,6 +204,11 @@ if __name__ == '__main__':
                         help='''scrub chimeric reads''')
     parser.add_argument('-u', '--include-unpolished', action='store_true',
                         help='''output unpolished target sequences''')
+
+    parser.add_argument('--base', action='store_true',
+                        help='''perform base level alignment when computing read overlaps in the first iteration''')
+    parser.add_argument('--min-identity', default=0.8, help='''minimum identity used for filtering overlaps, only works combined with --base''')
+
     parser.add_argument('--linear', action='store_true',
                         help='''perform linear based fragment correction rather than variation graph based
                         fragment correction''')
@@ -296,7 +307,8 @@ if __name__ == '__main__':
                         args.min_support, corrected_chunk_file,
                         args.window_length, args.quality_threshold,
                         args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-                        args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, i, args.min_identity_cns, args.min_ovlplen_cns)
+                        args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, 
+                        i, args.min_identity_cns, args.min_ovlplen_cns, args.base, args.min_identity)
                     corrected_chunk_files.append(corrected_chunk_file)
 
                 # os.system("echo -n >{}".format(corrected_file))
@@ -338,7 +350,8 @@ if __name__ == '__main__':
                     args.min_support, corrected_file,
                     args.window_length, args.quality_threshold,
                     args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, i, args.min_identity_cns, args.min_ovlplen_cns)
+                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, 
+                    i, args.min_identity_cns, args.min_ovlplen_cns,args.base, args.min_identity)
             os.system("mv {} {}".format(corrected_file, args.outfile))
             os.system("rm -f reads.corrected.tmp*.fa")
         except OSError:
