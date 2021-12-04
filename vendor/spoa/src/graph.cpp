@@ -825,12 +825,11 @@ namespace spoa
     double delta = 1;                                      //amplification factor
     double min_support_moderate = min_support * delta;     //moderate correlated edges
     double min_support_weak = min_support * delta * delta; //weak correlated edges
-    bool if_strong = false;
-    bool if_moderate = false;
-    bool if_weak = false;
+    // bool if_strong = false;
+    // bool if_moderate = false;
+    // bool if_weak = false;
 
-    // uint16_t max_degree = 2; //for diploid
-    uint16_t max_degree = 10000; //mute
+    // uint16_t max_degree = 10000; //mute
     uint16_t weight_rank;
 
     for (const auto &it : edges_)
