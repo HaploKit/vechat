@@ -2,6 +2,7 @@
 
 #include "spoa/graph.hpp"
 
+#include <math.h>
 #include <algorithm>
 #include <cassert>
 #include <fstream>
@@ -164,7 +165,8 @@ namespace spoa
     std::vector<std::uint32_t> weights;
     for (std::uint32_t i = 0; i < quality_len; ++i)
     {
-      weights.emplace_back(quality[i] - 33); // Phred quality
+      //weights.emplace_back(quality[i] - 33); // Phred quality
+      weights.emplace_back((1 - pow(10,(33 -quality[i])/10.))*1000); // 1-p
     }
     AddAlignment(alignment, sequence, sequence_len, weights);
   }
@@ -828,7 +830,7 @@ namespace spoa
     bool if_weak = false;
 
     // uint16_t max_degree = 2; //for diploid
-    uint16_t max_degree = 100000000; //mute
+    uint16_t max_degree = 10000; //mute
     uint16_t weight_rank;
 
     for (const auto &it : edges_)
@@ -859,7 +861,7 @@ namespace spoa
 
       confidence_uv = double(it->weight) / total_weight;
       support = double(it->weight) / average_weight;
-      // std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
+      //std::cerr<<"support_confidence\t"<< support<<"\t"<<confidence_uv<<"\t";
 
       //compute confidence_vu
       total_weight = 0;
@@ -880,7 +882,7 @@ namespace spoa
       // }
 
       confidence_vu = double(it->weight) / total_weight;
-      // std::cerr<<confidence_vu<<"\n";
+      //std::cerr<<confidence_vu<<"\n";
 
       //determine the type of edge
       // if (it->tail->outedges.size() == 1 && it->head->inedges.size() == 1)

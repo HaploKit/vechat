@@ -5,7 +5,8 @@
  */
 
 #include <algorithm>
-
+#include <assert.h>
+#include <math.h>
 #include "window.hpp"
 
 #include "spoa/spoa.hpp"
@@ -190,6 +191,9 @@ namespace racon
             return false;
         }
 
+        //std::cerr << "Debug_first: "<<qualities_.front().first<<"\n";
+        //std::cerr << "Debug_second: "<<qualities_.front().second<<"\n";
+
         spoa::Graph graph{};
         graph.AddAlignment(
             spoa::Alignment(),
@@ -210,17 +214,25 @@ namespace racon
         double average_weight; //average phred score (or coverage) for bases in all sequences
         double total_bases_weight = 0.0;
         std::uint16_t window_len = sequences_.front().second;
+        bool if_fasta = false;
 
         //the backbone sequence
-        if (qualities_.front().first == nullptr)
+        //std::cerr << "Debug, front: "<<qualities_.front().first<<"\n";
+
+        //if (qualities_.front().first == nullptr)
+        if (qualities_.front().first == std::string(qualities_.front().second,'!'))
         {
             total_bases_weight += sequences_.front().second;
+            if_fasta = true;
+            //std::cerr << "YES, backbone FASTA mode running...\n";
         }
         else
         {
+            //std::cerr << "YES, backbone FASTQ mode running...\n";
             for (std::uint16_t q = 0; q < qualities_.front().second; ++q)
             {
-                total_bases_weight += qualities_.front().first[q] - 33;
+                //total_bases_weight += qualities_.front().first[q] - 33;
+                total_bases_weight += 1 - pow(10,(33 - qualities_.front().first[q])/10.0); //1-p rather than phred score
             }
         }
 
@@ -268,7 +280,6 @@ namespace racon
                 graph.AddAlignment(
                     alignment,
                     sequences_[i].first, sequences_[i].second);
-
                 total_bases_weight += sequences_[i].second;
             }
             else
@@ -280,20 +291,30 @@ namespace racon
 
                 for (std::uint16_t q = 0; q < qualities_[i].second; ++q)
                 {
-                    total_bases_weight += qualities_[i].first[q] - 33;
+                    //total_bases_weight += qualities_[i].first[q] - 33;
+                    total_bases_weight += (1 - pow(10,(33 - qualities_[i].first[q])/10.0)); //1-p
                 }
             }
         }
 
         // start to prune the graph
-        average_weight = 2.0 * total_bases_weight / window_len; //2 * average coverage if no quality
+        if (if_fasta)
+        {
+           // std::cerr << "YES, FASTA mode running...\n";
+            average_weight = 2.0 * total_bases_weight / window_len; // fasta
+        }
+        else{
+            //std::cerr << "YES, FASTQ mode running...\n";
+            average_weight = 2.0 * total_bases_weight / window_len * 1000; //2 * average coverage if no quality * factor (to suit uint)
+        }
+
         int64_t min_weight = 0; //deprecated metric 
         // int64_t min_weight = 5 * 2;
         // double min_confidence = 0.19;
         // double min_support = 0.15;
         // std::uint32_t num_prune = 3;
 
-        // std::cerr << "Pruning_graph_1"<< "\n";
+        //std::cerr << "Pruning_graph_1"<< "\n";
         graph.PruneGraph(min_weight, min_confidence, min_support, average_weight);
         spoa::Graph *ptr = new spoa::Graph(graph.LargestSubgraph());
 
@@ -307,7 +328,7 @@ namespace racon
 
         for (std::uint32_t k = 0; k < num_prune - 1; k++)
         {
-            // std::cerr << "Pruning_graph_" << 2 << "th...\n";
+            //std::cerr << "Pruning_graph_" << 2 << "th...\n";
             // re-align sequences to the pruned subgraph and prune graph iteratively
             for (uint32_t j = 0; j < sequences_.size(); ++j)
             {
@@ -330,6 +351,7 @@ namespace racon
                 std::vector<std::uint32_t> weights;
                 if (qualities_[i].first == nullptr)
                 {
+                    //std::cerr << "YES, FASTA mode running, round2...\n";
                     for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
                     {
                         weights.emplace_back(1);
@@ -337,10 +359,15 @@ namespace racon
                 }
                 else
                 { // consider quality score
+                    //std::cerr << "YES, FASTQ mode running, round2...\n";
                     for (std::uint32_t n = 0; n < sequences_[i].second; ++n)
                     {
-                        std::uint32_t weight = static_cast<std::uint32_t>(qualities_[i].first[n]) - 33; //phred score
+                        //std::uint32_t weight = static_cast<std::uint32_t>(qualities_[i].first[n]) - 33; //phred score,potential bug using 'uint - int'
+                        std::uint32_t weight = (1 - pow(10,(33-qualities_[i].first[n])/10.0))*1000; 
+                        //assert(weight>=0);
+                   
                         weights.emplace_back(weight);
+                        //std::cerr << "round2: weight: "<<  33-qualities_[i].first[n]<<"\t"<<weight<<std::endl;
                     }
                 }
                 (*ptr).AddWeights(alignment, sequences_[i].first, sequences_[i].second, weights);
