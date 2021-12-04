@@ -7,10 +7,10 @@ Correcting Errors in Noisy Long Reads Using Variation Graphs
 
 ## Description
 
-Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present [vechat](https://github.com/xiaoluo91/vechat), a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Briefly, noisy variation graphs are firstly constructed from raw long reads, preserving true [v]()ariations and sequencing [e]()rrors. These graphs could be then pruned based on the correlations([chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction. vechat is implemented with C++ and Python3.
+Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present [VeChat](https://github.com/xiaoluo91/vechat), a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Briefly, noisy variation graphs are firstly constructed from raw long reads, preserving true [v]()ariations and sequencing [e]()rrors. These graphs could be then pruned based on the correlations([chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction. vechat is implemented with C++ and Python3.
 
 ## Installation and dependencies
-vechat relies on the following dependencies:
+VeChat relies on the following dependencies:
 - [racon](https://github.com/lbcb-sci/racon)
 - [minimap2](https://github.com/lh3/minimap2)
 - [fpa](https://github.com/natir/fpa) and [yacrd](https://github.com/natir/yacrd)
@@ -27,7 +27,7 @@ conda install -c bioconda vechat
 ```
 
 #### 2.Install from source code
-To install vechat, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
+To install VeChat, firstly, it is recommended to intall the dependencies through [Conda](https://docs.conda.io/en/latest/):
 ```
 conda create -n vechat
 conda activate vechat
