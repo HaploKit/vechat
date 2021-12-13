@@ -7,7 +7,7 @@ Correcting Errors in Noisy Long Reads Using Variation Graphs
 
 ## Description
 
-Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present [VeChat](https://github.com/xiaoluo91/vechat), a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Briefly, noisy variation graphs are firstly constructed from raw long reads, preserving true [V]()ariations and sequencing [E]()rrors. These graphs could be then pruned based on the correlations([Chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction. vechat is implemented with C++ and Python3.
+Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present [VeChat](https://github.com/HaploKit/vechat), a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Briefly, noisy variation graphs are firstly constructed from raw long reads, preserving true [V]()ariations and sequencing [E]()rrors. These graphs could be then pruned based on the correlations([Chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction. vechat is implemented with C++ and Python3.
 
 ## Installation and dependencies
 VeChat relies on the following dependencies:
@@ -36,7 +36,7 @@ conda install -c bioconda minimap2 yacrd fpa=0.5
 
 Subsequently, pull down the code to the directory where you want to install, and compile the code:
 ```
-git clone https://github.com/xiaoluo91/vechat.git
+git clone https://github.com/HaploKit/vechat.git
 cd vechat
 mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release -Dspoa_optimize_for_portability=ON ..;make
 ```
