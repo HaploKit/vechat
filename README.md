@@ -7,7 +7,10 @@ Correcting Errors in Noisy Long Reads Using Variation Graphs
 
 ## Description
 
-Error self-correction is usually the first step and thus crucial in long-read sequencing data analysis. Current methods generally perform self-correction by computing a consensus sequence for each read, which may lose haplotype-specific variations in  heterogeneous genomes such as polyploid genomes and metagenomes. Here, we present [VeChat](https://github.com/HaploKit/vechat), a novel approach to perform haplotype-aware error correction for noisy long reads using variation graphs. Briefly, noisy variation graphs are firstly constructed from raw long reads, preserving true [V]()ariations and sequencing [E]()rrors. These graphs could be then pruned based on the correlations([Chat]()) between nodes (i.e. variations or errors). The pruned variation graphs are subsequently used to perform haplotype-aware error correction. vechat is implemented with C++ and Python3.
+Error correction is the canonical first step in long-read sequencing data analysis. The current standard is to make use of a consensus sequence as a template. However, in mixed samples, such as metagenomes or organisms of higher ploidy, consensus induced biases can mask true variants affecting haplotypes of lower frequencies, because they are mistaken as errors.
+
+The novelty presented here is to use graph based, instead of sequence based consensus as a template for identifying errors. The advantage is that graph based reference systems also capture variants of lower frequencies, so do not mistakenly mask them as errors. We present VeChat, as a novel approach to implement this idea: VeChat distinguishes errors from haplotype-specific true variants based on variation graphs, which reflect a popular type of data structure for pangenome reference systems. Upon initial construction of an ad-hoc variation graph from the raw input reads, nodes and edges that are due to errors are pruned from that graph by way of an iterative procedure that is based on principles from frequent itemset mining. Upon termination, the graph exclusively contains nodes and edges reflecting true sequential phenomena. Final re-alignments of the raw reads indicate where and how reads need to be corrected. VeChat is implemented with C++ and Python3.
+
 
 ## Installation and dependencies
 VeChat relies on the following dependencies:
