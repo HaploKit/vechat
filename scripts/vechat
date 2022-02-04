@@ -67,13 +67,23 @@ def run_error_correction(
             # perform normal error correction, which is the same with orginal 'racon'
             print("perform linear sequence based error correction")
             if include_unpolished: #used in high complexity dataset(1000 genomes, 20x)
-                os.system("{} -f -u -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, threads, sub_query_sequences,
-                              chunk_target_sequence, corrected_file))
+                if cuda_banded_alignment:
+                    os.system("{} -f -u -t {} -b --cudaaligner-batches {} -c {} {} overlap.paf {} >{}"
+                          .format(racon_path, threads, cudaaligner_batches, cudapoa_batches, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
+                else:
+                    os.system("{} -f -u -t {} {} overlap.paf {} >{}"
+                          .format(racon_path, threads, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
             else:
-                os.system("{} -f  -t {} {} overlap.paf {} >{}"
-                        .format(racon_path, threads, sub_query_sequences,
-                                chunk_target_sequence, corrected_file))
+                if cuda_banded_alignment:
+                    os.system("{} -f  -t {} -b --cudaaligner-batches {} -c {} {} overlap.paf {} >{}"
+                            .format(racon_path, threads, cudaaligner_batches, cudapoa_batches, sub_query_sequences,
+                                    chunk_target_sequence, corrected_file))
+                else:
+                    os.system("{} -f  -t {} {} overlap.paf {} >{}"
+                            .format(racon_path, threads, sub_query_sequences,
+                                    chunk_target_sequence, corrected_file))
         os.system("rm -f query_sequences.tmp.*")
     except:
         raise Exception("Unable to run error correction!")
