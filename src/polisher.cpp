@@ -142,7 +142,8 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
 #ifdef CUDA_ENABLED
         // If CUDA is enabled, return an instance of the CUDAPolisher object.
         return std::unique_ptr<Polisher>(new CUDAPolisher(std::move(sparser),
-                    std::move(oparser), std::move(tparser), type, window_length,
+                    std::move(oparser), std::move(tparser), type, haplotype,
+                    min_confidence, min_support, num_prune, window_length,
                     quality_threshold, error_threshold, trim, match, mismatch, gap,
                     num_threads, cudapoa_batches, cuda_banded_alignment, cudaaligner_batches,
                     cudaaligner_band_width));
@@ -159,7 +160,7 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
         (void) cuda_banded_alignment;
         (void) cudaaligner_band_width;
         return std::unique_ptr<Polisher>(new Polisher(std::move(sparser),
-                    std::move(oparser), std::move(tparser), type, haplotype, 
+                    std::move(oparser), std::move(tparser), type, haplotype,
                     min_confidence, min_support, num_prune, window_length,
                     quality_threshold, error_threshold, trim, match, mismatch, gap,
                     num_threads));
