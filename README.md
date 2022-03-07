@@ -1,7 +1,5 @@
 
-<!-- ![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png) -->
-
-<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=30% />
+![logo](logo.png)
 
 Correcting Errors in Noisy Long Reads Using Variation Graphs
 
