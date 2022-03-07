@@ -35,19 +35,14 @@ conda activate vechat
 conda install -c bioconda minimap2 yacrd fpa=0.5
 ```
 
-Subsequently, pull down the code to the directory where you want to install, and compile the code:
-```
+## Running and options
+If you pulled the source repo; to run vechat you just need to invoke the script with python intepreter in created conda enviornment from the repo directory
+```bash
 git clone https://github.com/HaploKit/vechat.git
 cd vechat
-mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release -Dspoa_optimize_for_portability=ON ..;make
+python script/vechat -h
 ```
-
-Add the following code to your `$HOME/.bashrc`, please change the `/path/to/vechat` as your own path:
-```
-export PATH=/path/to/vechat/scripts/:$PATH
-```
-
-## Running and options
+Modified `racon` dependency will be built automatically.
 
 The input read file is only required and the format should be FASTA/FASTQ (can be compressed with gzip). Other parameters are optional.
 Please run `vechat -h` to get details of optional arguments. 

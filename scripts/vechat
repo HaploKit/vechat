@@ -3,11 +3,16 @@
 from __future__ import print_function
 import os
 import sys
-import time
 import argparse
+import multiprocessing
 import subprocess
 import gzip
 
+from pathlib import Path
+
+PROJECT_BASE_DIR = Path(__file__).absolute().parent.parent
+PROJECT_BUILD_DIR = PROJECT_BASE_DIR.joinpath('build')
+VECHAT_RACON_PATH = PROJECT_BUILD_DIR.joinpath('/bin/vechat_racon')
 
 def run_error_correction(
         sequences, chunk_target_sequence,
@@ -20,6 +25,8 @@ def run_error_correction(
         iteration, min_identity_cns, min_ovlplen_cns, base, min_identity):
     if iteration==2: 
         linear=True #compute consensus at the second iteration
+
+
     racon_path = os.path.dirname(
         os.path.realpath(__file__))+"/../build/bin/vechat_racon"
     overlap='overlap.paf'
@@ -197,6 +204,20 @@ def scrub_reads(sequences, platform, threads):
 
 
 if __name__ == '__main__':
+    if not PROJECT_BUILD_DIR.exists():
+      cmake_cfg_args = ['-S', PROJECT_BASE_DIR, '-B', PROJECT_BUILD_DIR, '-Dspoa_optimize_for_portability=ON', '-DCMAKE_BUILD_TYPE=Release']
+      try:
+        import ninja 
+        cmake_cfg_args += ['-G', 'Ninja']
+      except ImportError:
+        pass
+
+      subprocess.check_call(['cmake', *cmake_cfg_args], stdout=sys.stdout, stderr=sys.stderr)
+
+    if not VECHAT_RACON_PATH.exists():
+        cmake_args = ['--build', PROJECT_BUILD_DIR, '--config', 'Release', 
+          '-j', str(int(max(multiprocessing.cpu_count() / 2, 1)))]
+        subprocess.check_call(['cmake', *cmake_args], stdout=sys.stdout, stderr=sys.stderr)
 
     parser = argparse.ArgumentParser(description='''Haplotype-aware Error Correction for Noisy Long Reads Using Variation Graphs''',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
