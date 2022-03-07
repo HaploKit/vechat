@@ -53,6 +53,7 @@ add_library(${PROJECT_NAME}
   src/graph.cpp
   src/sisd_alignment_engine.cpp
   src/dispatcher.cpp)
+add_library(${PROJECT_NAME}::spoa ALIAS spoa)
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/vendor/simde>
