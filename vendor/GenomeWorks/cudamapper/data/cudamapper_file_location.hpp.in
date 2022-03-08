@@ -1,4 +1,0 @@
-
-#pragma once
-
-#cmakedefine CUDAMAPPER_BENCHMARK_DATA_DIR "@CUDAMAPPER_BENCHMARK_DATA_DIR@"
