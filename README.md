@@ -40,7 +40,7 @@ If you pulled the source repo; to run vechat you just need to invoke the script 
 ```bash
 git clone https://github.com/HaploKit/vechat.git
 cd vechat
-python script/vechat -h
+python ./scripts/vechat -h
 ```
 Modified `racon` dependency will be built automatically.
 
