@@ -21,7 +21,7 @@ def run_error_correction(
     if iteration==2: 
         linear=True #compute consensus at the second iteration
     racon_path = os.path.dirname(
-        os.path.realpath(__file__))+"/../build/bin/racon"
+        os.path.realpath(__file__))+"/racon"
     overlap='overlap.paf'
     try:
         # compute overlap and filter
