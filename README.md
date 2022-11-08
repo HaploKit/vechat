@@ -100,3 +100,4 @@ vechat reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa
 
 
 ## Citation
+Luo, X., Kang, X. & Schönhuth, A. VeChat: correcting errors in long reads using variation graphs. Nat Commun 13, 6657 (2022). https://doi.org/10.1038/s41467-022-34381-8
