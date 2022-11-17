@@ -142,7 +142,8 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
 #ifdef CUDA_ENABLED
         // If CUDA is enabled, return an instance of the CUDAPolisher object.
         return std::unique_ptr<Polisher>(new CUDAPolisher(std::move(sparser),
-                    std::move(oparser), std::move(tparser), type, window_length,
+                    std::move(oparser), std::move(tparser), type, haplotype,
+                    min_confidence, min_support, num_prune, window_length,
                     quality_threshold, error_threshold, trim, match, mismatch, gap,
                     num_threads, cudapoa_batches, cuda_banded_alignment, cudaaligner_batches,
                     cudaaligner_band_width));
@@ -159,7 +160,7 @@ std::unique_ptr<Polisher> createPolisher(const std::string& sequences_path,
         (void) cuda_banded_alignment;
         (void) cudaaligner_band_width;
         return std::unique_ptr<Polisher>(new Polisher(std::move(sparser),
-                    std::move(oparser), std::move(tparser), type, haplotype, 
+                    std::move(oparser), std::move(tparser), type, haplotype,
                     min_confidence, min_support, num_prune, window_length,
                     quality_threshold, error_threshold, trim, match, mismatch, gap,
                     num_threads));
@@ -497,7 +498,7 @@ void Polisher::polish(std::vector<std::unique_ptr<Sequence>>& dst,
         for (uint64_t i = 0; i < windows_.size(); ++i) {
         thread_futures.emplace_back(thread_pool_->Submit(
             [&](uint64_t j) -> bool {
-                auto it = thread_pool_->thread_ids().find(std::this_thread::get_id());  // NOLINT
+                auto it = thread_pool_->thread_map().find(std::this_thread::get_id());  // NOLINT
                 return windows_[j]->generate_consensus(
                     alignment_engines_[it->second], trim_, haplotype_,
                     min_confidence_, min_support_, num_prune_);
@@ -508,7 +509,7 @@ void Polisher::polish(std::vector<std::unique_ptr<Sequence>>& dst,
         for (uint64_t i = 0; i < windows_.size(); ++i) {
         thread_futures.emplace_back(thread_pool_->Submit(
             [&](uint64_t j) -> bool {
-                auto it = thread_pool_->thread_ids().find(std::this_thread::get_id());  // NOLINT
+                auto it = thread_pool_->thread_map().find(std::this_thread::get_id());  // NOLINT
                 return windows_[j]->generate_consensus(
                     alignment_engines_[it->second], trim_);
             }, i));

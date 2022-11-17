@@ -27,12 +27,13 @@ const uint32_t RACON_LOGGER_BIN_SIZE = 20;
 CUDAPolisher::CUDAPolisher(std::unique_ptr<bioparser::Parser<Sequence>> sparser,
     std::unique_ptr<bioparser::Parser<Overlap>> oparser,
     std::unique_ptr<bioparser::Parser<Sequence>> tparser,
-    PolisherType type, uint32_t window_length, double quality_threshold,
+    PolisherType type, bool haplotype, double min_confidence, double min_support,
+    uint32_t num_prune, uint32_t window_length, double quality_threshold,
     double error_threshold, bool trim, int8_t match, int8_t mismatch, int8_t gap,
     uint32_t num_threads, uint32_t cudapoa_batches, bool cuda_banded_alignment,
     uint32_t cudaaligner_batches, uint32_t cudaaligner_band_width)
         : Polisher(std::move(sparser), std::move(oparser), std::move(tparser),
-                type, window_length, quality_threshold, error_threshold, trim,
+                type, haplotype, min_confidence, min_support, num_prune, window_length, quality_threshold, error_threshold, trim,
                 match, mismatch, gap, num_threads)
         , cudapoa_batches_(cudapoa_batches)
         , cudaaligner_batches_(cudaaligner_batches)

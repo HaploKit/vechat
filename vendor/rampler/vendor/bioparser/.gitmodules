@@ -1,4 +1,0 @@
-
-[submodule "vendor/biosoup"]
-	path = vendor/biosoup
-	url = https://github.com/rvaser/biosoup

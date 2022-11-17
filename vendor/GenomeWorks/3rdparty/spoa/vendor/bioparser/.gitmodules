@@ -1,6 +1,0 @@
-[submodule "vendor/googletest"]
-	path = vendor/googletest
-	url = https://github.com/google/googletest
-[submodule "vendor/zlib"]
-	path = vendor/zlib
-	url = https://github.com/madler/zlib

@@ -3,11 +3,16 @@
 from __future__ import print_function
 import os
 import sys
-import time
 import argparse
+import multiprocessing
 import subprocess
 import gzip
 
+from pathlib import Path
+
+PROJECT_BASE_DIR = Path(__file__).absolute().parent.parent
+PROJECT_BUILD_DIR = PROJECT_BASE_DIR.joinpath('build')
+VECHAT_RACON_PATH = PROJECT_BUILD_DIR.joinpath('/bin/vechat_racon')
 
 def run_error_correction(
         sequences, chunk_target_sequence,
@@ -20,8 +25,10 @@ def run_error_correction(
         iteration, min_identity_cns, min_ovlplen_cns, base, min_identity):
     if iteration==2: 
         linear=True #compute consensus at the second iteration
+
+
     racon_path = os.path.dirname(
-        os.path.realpath(__file__))+"/../build/bin/racon"
+        os.path.realpath(__file__))+"/../build/bin/vechat_racon"
     overlap='overlap.paf'
     try:
         # compute overlap and filter
@@ -51,22 +58,39 @@ def run_error_correction(
 
     try:
         if not linear:
-            # perform haplotype aware error correction
-            print("perform variation graph based (haplotype-aware) error correction")
-            os.system("{} -f -p -d {} -s {} -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, min_confidence, min_support, threads, sub_query_sequences,
-                              chunk_target_sequence, corrected_file))
+            if cuda_banded_alignment:
+               # perform haplotype aware error correction
+                print("perform variation graph based (haplotype-aware) error correction")
+                os.system("{} -f -p -d {} -s {} -t {} -b --cudaaligner-batches {} -c {} {} overlap.paf {} >{}"
+                          .format(racon_path, min_confidence, min_support, threads, cudaaligner_batches, cudapoa_batches, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
+            else:
+                # perform haplotype aware error correction
+                print("perform variation graph based (haplotype-aware) error correction")
+                os.system("{} -f -p -d {} -s {} -t {} {} overlap.paf {} >{}"
+                          .format(racon_path, min_confidence, min_support, threads, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
         else:
             # perform normal error correction, which is the same with orginal 'racon'
             print("perform linear sequence based error correction")
             if include_unpolished: #used in high complexity dataset(1000 genomes, 20x)
-                os.system("{} -f -u -t {} {} overlap.paf {} >{}"
-                      .format(racon_path, threads, sub_query_sequences,
-                              chunk_target_sequence, corrected_file))
+                if cuda_banded_alignment:
+                    os.system("{} -f -u -t {} -b --cudaaligner-batches {} -c {} {} overlap.paf {} >{}"
+                          .format(racon_path, threads, cudaaligner_batches, cudapoa_batches, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
+                else:
+                    os.system("{} -f -u -t {} {} overlap.paf {} >{}"
+                          .format(racon_path, threads, sub_query_sequences,
+                                  chunk_target_sequence, corrected_file))
             else:
-                os.system("{} -f  -t {} {} overlap.paf {} >{}"
-                        .format(racon_path, threads, sub_query_sequences,
-                                chunk_target_sequence, corrected_file))
+                if cuda_banded_alignment:
+                    os.system("{} -f  -t {} -b --cudaaligner-batches {} -c {} {} overlap.paf {} >{}"
+                            .format(racon_path, threads, cudaaligner_batches, cudapoa_batches, sub_query_sequences,
+                                    chunk_target_sequence, corrected_file))
+                else:
+                    os.system("{} -f  -t {} {} overlap.paf {} >{}"
+                            .format(racon_path, threads, sub_query_sequences,
+                                    chunk_target_sequence, corrected_file))
         os.system("rm -f query_sequences.tmp.*")
     except:
         raise Exception("Unable to run error correction!")
@@ -180,6 +204,20 @@ def scrub_reads(sequences, platform, threads):
 
 
 if __name__ == '__main__':
+    if not PROJECT_BUILD_DIR.exists():
+      cmake_cfg_args = ['-S', PROJECT_BASE_DIR, '-B', PROJECT_BUILD_DIR, '-Dspoa_optimize_for_portability=ON', '-DCMAKE_BUILD_TYPE=Release']
+      try:
+        import ninja 
+        cmake_cfg_args += ['-G', 'Ninja']
+      except ImportError:
+        pass
+
+      subprocess.check_call(['cmake', *cmake_cfg_args], stdout=sys.stdout, stderr=sys.stderr)
+
+    if not VECHAT_RACON_PATH.exists():
+        cmake_args = ['--build', PROJECT_BUILD_DIR, '--config', 'Release', 
+          '-j', str(int(max(multiprocessing.cpu_count() / 2, 1)))]
+        subprocess.check_call(['cmake', *cmake_args], stdout=sys.stdout, stderr=sys.stderr)
 
     parser = argparse.ArgumentParser(description='''Haplotype-aware Error Correction for Noisy Long Reads Using Variation Graphs''',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -350,7 +388,7 @@ if __name__ == '__main__':
                     args.min_support, corrected_file,
                     args.window_length, args.quality_threshold,
                     args.error_threshold, args.match, args.mismatch, args.gap, args.threads,
-                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment, 
+                    args.cudaaligner_batches, args.cudapoa_batches, args.cuda_banded_alignment,
                     i, args.min_identity_cns, args.min_ovlplen_cns,args.base, args.min_identity)
             os.system("mv {} {}".format(corrected_file, args.outfile))
             os.system("rm -f reads.corrected.tmp*.fa")

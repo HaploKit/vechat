@@ -1,7 +1,5 @@
 
-<!-- ![Aaron Swartz](https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png) -->
-
-<img src=https://raw.githubusercontent.com/xiaoluo91/vechat/master/logo2.png width=30% />
+![logo](logo.png)
 
 Correcting Errors in Noisy Long Reads Using Variation Graphs
 
@@ -37,19 +35,14 @@ conda activate vechat
 conda install -c bioconda minimap2 yacrd fpa=0.5
 ```
 
-Subsequently, pull down the code to the directory where you want to install, and compile the code:
-```
+## Running and options
+If you pulled the source repo; to run vechat you just need to invoke the script with python intepreter in created conda enviornment from the repo directory
+```bash
 git clone https://github.com/HaploKit/vechat.git
 cd vechat
-mkdir build;cd build;cmake -DCMAKE_BUILD_TYPE=Release -Dspoa_optimize_for_portability=ON ..;make
+python ./scripts/vechat -h
 ```
-
-Add the following code to your `$HOME/.bashrc`, please change the `/path/to/vechat` as your own path:
-```
-export PATH=/path/to/vechat/scripts/:$PATH
-```
-
-## Running and options
+Modified `racon` dependency will be built automatically.
 
 The input read file is only required and the format should be FASTA/FASTQ (can be compressed with gzip). Other parameters are optional.
 Please run `vechat -h` to get details of optional arguments. 
@@ -107,3 +100,4 @@ vechat reads.fq.gz -t 48 --platform pb --split -o reads.corrected.fa
 
 
 ## Citation
+Luo, X., Kang, X. & Schönhuth, A. VeChat: correcting errors in long reads using variation graphs. Nat Commun 13, 6657 (2022). https://doi.org/10.1038/s41467-022-34381-8
