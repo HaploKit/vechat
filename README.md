@@ -21,7 +21,7 @@ VeChat relies on the following dependencies:
 - cmake 3.2+
 - zlib
 
-#### 1.Install from [Conda](https://docs.conda.io/en/latest/) (TODO)
+#### 1.Install from [Conda](https://docs.conda.io/en/latest/) 
 This is easy and recommended:
 ```
 conda create -n vechat
